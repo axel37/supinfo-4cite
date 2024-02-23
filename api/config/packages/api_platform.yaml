@@ -1,6 +1,6 @@
 api_platform:
-    title: Hello API Platform
-    version: 1.0.0
+    title: Hotel API
+    version: 0.1.0
     # Mercure integration, remove if unwanted
     mercure: ~
     formats:

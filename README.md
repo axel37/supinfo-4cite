@@ -5,3 +5,7 @@
 `docker compose logs -f` : See logs
 
 `docker compose ps` : See containers
+
+`docker compose exec php bin/phpunit` : Run tests
+
+`docker compose exec php bin/console -e test ...` : Execute commands for the dev environment (create db, migrate...)
