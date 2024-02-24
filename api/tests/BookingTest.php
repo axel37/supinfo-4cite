@@ -13,8 +13,8 @@ class BookingTest extends TestCase
 {
     public function testCanReadDatesAfterCreation(): void
     {
-        $startDate = new DatePoint('tomorrow');
-        $endDate = new DatePoint('tomorrow + 1 day');
+        $startDate = new DatePoint('today');
+        $endDate = new DatePoint('tomorrow');
 
         $booking = new Booking($startDate, $endDate);
 
