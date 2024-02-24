@@ -11,6 +11,7 @@ readonly class Booking
 {
     public DatePoint $startDate;
     public DatePoint $endDate;
+    public Room $room;
 
     /**
      * @throws BookingInThePastException Bookings can't be made for past dates.
