@@ -19,8 +19,8 @@ readonly class Booking
      */
     public function __construct(DatePoint $startDate, DatePoint $endDate)
     {
-        $now = new DatePoint();
-        if ($startDate < $now) {
+        $today = new DatePoint('today');
+        if ($startDate < $today) {
             throw new BookingInThePastException();
         }
         if ($endDate < $startDate) {
