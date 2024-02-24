@@ -7,6 +7,9 @@ use Symfony\Component\Clock\DatePoint;
 
 readonly class Booking
 {
+    public DatePoint $startDate;
+    public DatePoint $endDate;
+
     /**
      * @throws BookingInThePastException Bookings can't be made for past dates.
      */
@@ -16,5 +19,8 @@ readonly class Booking
         if ($startDate < $now) {
             throw new BookingInThePastException();
         }
+
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 }
