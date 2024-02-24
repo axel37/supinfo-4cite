@@ -9,3 +9,5 @@
 `docker compose exec php bin/phpunit` : Run tests
 
 `docker compose exec php bin/console -e test ...` : Execute commands for the dev environment (create db, migrate...)
+
+`XDEBUG_MODE=debug docker compose up --wait` : Enable XDebug
