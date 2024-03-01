@@ -31,6 +31,11 @@ See pictures
 ~~See description
 Hotel with no description is ok~~
 
+# Picture
+
+~~Empty path~~
+~~Can read path~~
+
 # User
 
 Find all user's bookings
