@@ -24,9 +24,9 @@ Has name
 ~~See hotel's rooms~~
 ~~See hotel's bookings~~
 Book a room
-Create with valid name and location
+~~Create with valid name and location~~
 ~~Invalid name~~
-Invalid location
+~~Invalid location~~
 See pictures
 See name
 

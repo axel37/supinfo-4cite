@@ -18,9 +18,19 @@ class Hotel
         if (trim($this->name) === '') {
             throw new EmptyNameException();
         }
-        if (trim($this->name) === '') {
+        if (trim($this->location) === '') {
             throw new EmptyLocationException();
         }
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
     }
 
     public function getRooms(): iterable

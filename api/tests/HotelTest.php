@@ -36,6 +36,13 @@ class HotelTest extends TestCase
         unset($this->hotel, $this->rooms, $this->roomC, $this->roomB, $this->roomA);
     }
 
+    public function testCanReadNameAndLocation(): void
+    {
+        $hotel = new Hotel('Grand Hotel', 'Pine Street', []);
+        $this->assertEquals('Grand Hotel', $hotel->getName());
+        $this->assertEquals('Pine Street', $hotel->getLocation());
+    }
+
     public function testFailsOnEmptyName(): void
     {
         $this->expectException(EmptyNameException::class);
