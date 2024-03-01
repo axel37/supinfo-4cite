@@ -71,4 +71,9 @@ class Hotel
     {
         $this->pictures = array_udiff($this->pictures, [$picture], static fn(Picture $a, Picture $b) => $a <=> $b);
     }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 }
