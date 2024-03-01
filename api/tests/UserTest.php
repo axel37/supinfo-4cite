@@ -52,6 +52,12 @@ class UserTest extends TestCase
         $this->assertEquals('martin', $this->user->getUsername());
     }
 
+    public function testFailsOnUpdateInvalidEmail(): void
+    {
+        $this->expectException(EmptyEmailException::class);
+        $this->user->setEmail(' ');
+    }
+
     public function testCanBookRoom(): void
     {
         $room = new Room('Room 237');
