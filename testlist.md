@@ -22,6 +22,7 @@ Test for aliasing bugs (= defensive copies of dates)
 Invalid name~~
 Update
 update invalid name
+room already in hotel
 
 # Hotel
 

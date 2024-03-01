@@ -15,7 +15,7 @@ class Hotel
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms, private ?string $description = null)
+    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private iterable $rooms, private ?string $description = null)
     {
         if (trim($this->name) === '') {
             throw new EmptyNameException();
@@ -80,5 +80,15 @@ class Hotel
     public function setLocation(string $location): void
     {
         $this->location = $location;
+    }
+
+    public function removeRoom(Room $room): void
+    {
+        $this->rooms = array_udiff($this->rooms, [$room], static fn(Room $a, Room $b) => $a <=> $b);
+    }
+
+    public function addRoom(Room $room): void
+    {
+        $this->rooms[] = $room;
     }
 }

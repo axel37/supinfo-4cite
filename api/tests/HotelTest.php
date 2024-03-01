@@ -10,6 +10,8 @@ use App\Exception\EmptyNameException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
 
+use function PHPUnit\Framework\assertCount;
+
 class HotelTest extends TestCase
 {
     private $roomA;
@@ -99,12 +101,21 @@ class HotelTest extends TestCase
         $this->assertCount(4, $this->hotel->getBookings());
     }
 
-    public function testCanUpdateNameAndLocation(): void
+    public function testCanUpdateNameAndLocationAndRooms(): void
     {
         $this->hotel->setName('Parkside Hotel');
         $this->assertEquals('Parkside Hotel', $this->hotel->getName());
 
         $this->hotel->setLocation('Evergreen Park');
         $this->assertEquals('Evergreen Park', $this->hotel->getLocation());
+
+        $this->hotel->removeRoom($this->roomA);
+        $this->assertCount(2, $this->hotel->getRooms());
+        $this->assertNotContains($this->roomA, $this->hotel->getRooms());
+
+        $newRoom = new Room('Room 000');
+        $this->hotel->addRoom($newRoom);
+        $this->assertCount(3, $this->hotel->getRooms());
+        $this->assertContains($newRoom, $this->hotel->getRooms());
     }
 }
