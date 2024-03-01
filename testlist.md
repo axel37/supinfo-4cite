@@ -13,9 +13,12 @@ End must be before start~~
 
 ~~Booking fails when room has overlapping bookings~~
 ~~Booking can start / end on same day as another~~
+Test for aliasing bugs (= defensive copies of dates)
 
 # Hotel
 
+~~See hotel's rooms~~
+See hotel's bookings
 See rooms
 Book a room
 See bookings

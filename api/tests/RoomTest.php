@@ -17,7 +17,7 @@ class RoomTest extends TestCase
      * - "SameDay" = On the same day as booking start/end
      */
 
-    public function testCanStartOrEndOnSameDay()
+    public function testCanStartOrEndOnSameDay(): void
     {
         $room = new Room();
 
