@@ -42,6 +42,7 @@ Hotel with no description is ok~~
 
 Find all user's bookings
 ~~email~~
-username
+invalid email format ? (handled by validator ?)
+~~username~~
 (password)
 (role)
