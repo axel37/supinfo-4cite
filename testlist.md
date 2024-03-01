@@ -28,6 +28,7 @@ Book a room
 ~~Invalid name~~
 ~~Invalid location~~
 See pictures
+Remove picture
 ~~See description
 Hotel with no description is ok~~
 

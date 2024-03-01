@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Hotel;
+use App\Entity\Picture;
 use App\Entity\Room;
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
@@ -60,6 +61,19 @@ class HotelTest extends TestCase
     {
         $this->expectException(EmptyLocationException::class);
         $hotel = new Hotel('Grand Hotel', '  ', []);
+    }
+
+    public function testCanReadPictures(): void
+    {
+        $pictureA = new Picture('/pictures/a.jpg');
+        $pictureB = new Picture('/pictures/B.jpg');
+
+        $this->hotel->addPicture($pictureA);
+        $this->hotel->addPicture($pictureB);
+
+        $this->assertCount(2, $this->hotel->getPictures());
+        $this->assertContains($pictureA, $this->hotel->getPictures());
+        $this->assertContains($pictureB, $this->hotel->getPictures());
     }
 
     public function testCanSeeRooms(): void

@@ -9,6 +9,8 @@ use App\Hotel\BookingInterface;
 
 class Hotel
 {
+    /** @var Picture[] $pictures */
+    private array $pictures = [];
 
     /**
      * @param Room[] $rooms
@@ -53,5 +55,15 @@ class Hotel
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function getPictures(): array
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): void
+    {
+        $this->pictures[] = $picture;
     }
 }
