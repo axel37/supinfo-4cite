@@ -20,6 +20,8 @@ Cancel ?
 Test for aliasing bugs (= defensive copies of dates)
 ~~Has name
 Invalid name~~
+Update
+update invalid name
 
 # Hotel
 
@@ -33,7 +35,10 @@ Book a room ?
 ~~Remove picture~~
 ~~See description
 Hotel with no description is ok~~
-Update
+~~Update
+update invalid name
+update invalid location~~
+~~room already in hotel~~
 
 # Picture
 

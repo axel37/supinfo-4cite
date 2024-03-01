@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
+use App\Exception\RoomAlreadyInHotelException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
 
@@ -15,14 +16,10 @@ class Hotel
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms, private ?string $description = null)
+    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private iterable $rooms, private ?string $description = null)
     {
-        if (trim($this->name) === '') {
-            throw new EmptyNameException();
-        }
-        if (trim($this->location) === '') {
-            throw new EmptyLocationException();
-        }
+        $this->setName($name);
+        $this->setLocation($location);
     }
 
     public function getName(): string
@@ -70,5 +67,34 @@ class Hotel
     public function removePicture(Picture $picture): void
     {
         $this->pictures = array_udiff($this->pictures, [$picture], static fn(Picture $a, Picture $b) => $a <=> $b);
+    }
+
+    public function setName(string $name): void
+    {
+        if (trim($name) === '') {
+            throw new EmptyNameException();
+        }
+        $this->name = $name;
+    }
+
+    public function setLocation(string $location): void
+    {
+        if (trim($location) === '') {
+            throw new EmptyLocationException();
+        }
+        $this->location = $location;
+    }
+
+    public function removeRoom(Room $room): void
+    {
+        $this->rooms = array_udiff($this->rooms, [$room], static fn(Room $a, Room $b) => $a <=> $b);
+    }
+
+    public function addRoom(Room $room): void
+    {
+        if (in_array($room, $this->rooms)) {
+            throw new RoomAlreadyInHotelException();
+        }
+        $this->rooms[] = $room;
     }
 }

@@ -7,8 +7,11 @@ use App\Entity\Picture;
 use App\Entity\Room;
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
+use App\Exception\RoomAlreadyInHotelException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
+
+use function PHPUnit\Framework\assertCount;
 
 class HotelTest extends TestCase
 {
@@ -97,5 +100,41 @@ class HotelTest extends TestCase
         $this->roomC->book(new DatePoint('tomorrow'), new DatePoint('tomorrow + 2 days'));
 
         $this->assertCount(4, $this->hotel->getBookings());
+    }
+
+    public function testCanUpdateNameAndLocationAndRooms(): void
+    {
+        $this->hotel->setName('Parkside Hotel');
+        $this->assertEquals('Parkside Hotel', $this->hotel->getName());
+
+        $this->hotel->setLocation('Evergreen Park');
+        $this->assertEquals('Evergreen Park', $this->hotel->getLocation());
+
+        $this->hotel->removeRoom($this->roomA);
+        $this->assertCount(2, $this->hotel->getRooms());
+        $this->assertNotContains($this->roomA, $this->hotel->getRooms());
+
+        $newRoom = new Room('Room 000');
+        $this->hotel->addRoom($newRoom);
+        $this->assertCount(3, $this->hotel->getRooms());
+        $this->assertContains($newRoom, $this->hotel->getRooms());
+    }
+
+    public function testFailsOnUpdateInvalidName(): void
+    {
+        $this->expectException(EmptyNameException::class);
+        $this->hotel->setName(' ');
+    }
+
+    public function testFailsOnUpdateInvalidLocation(): self
+    {
+        $this->expectException(EmptyLocationException::class);
+        $this->hotel->setLocation(' ');
+    }
+
+    public function testFailsOnAddRoomAlreadyInHotel(): void
+    {
+        $this->expectException(RoomAlreadyInHotelException::class);
+        $this->hotel->addRoom($this->roomA);
     }
 }
