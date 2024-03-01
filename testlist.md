@@ -1,4 +1,4 @@
-# Tests
+# Unit Tests
 
 ## Booking
 
@@ -23,7 +23,7 @@ Invalid name~~
 ~~Update~~
 ~~update invalid name~~
 
-# Hotel
+## Hotel
 
 ~~See hotel's rooms~~
 ~~See hotel's bookings~~
@@ -40,12 +40,12 @@ update invalid name
 update invalid location~~
 ~~room already in hotel~~
 
-# Picture
+## Picture
 
 ~~Empty path~~
 ~~Can read path~~
 
-# User
+## User
 
 ~~make a booking~~
 ~~Find all user's bookings~~
@@ -57,3 +57,7 @@ invalid email format ? (handled by validator ?)
 ~~Update user
 update invalid email
 update invalid name~~
+
+# API Tests
+
+## Hotel
