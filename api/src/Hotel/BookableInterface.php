@@ -9,7 +9,7 @@ use App\Entity\Booking;
  */
 interface BookableInterface
 {
-    public function book(\DateTimeInterface $startDate, \DateTimeInterface $endDate): void;
+    public function book(\DateTimeInterface $startDate, \DateTimeInterface $endDate): BookingInterface;
 
     /** @return iterable<BookingInterface> */
     public function getBookings(): iterable;
