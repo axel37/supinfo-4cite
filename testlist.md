@@ -49,6 +49,6 @@ invalid email format ? (handled by validator ?)
 ~~username~~
 (password)
 (role)
-Update user
+~~Update user
 update invalid email
-update invalid name
+update invalid name~~
