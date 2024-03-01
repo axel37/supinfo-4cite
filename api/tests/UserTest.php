@@ -11,12 +11,24 @@ use Symfony\Component\Clock\DatePoint;
 
 class UserTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = new User('martin@example.com', 'martinfowler');
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->user);
+    }
+
     public function testCanReadEmailAndUsername(): void
     {
-        $user = new User('martin@example.com', 'martinfowler');
-
-        $this->assertEquals('martin@example.com', $user->getEmail());
-        $this->assertEquals('martinfowler', $user->getUsername());
+        $this->assertEquals('martin@example.com', $this->user->getEmail());
+        $this->assertEquals('martinfowler', $this->user->getUsername());
     }
 
     public function testFailsOnEmptyEmail(): void
@@ -31,13 +43,21 @@ class UserTest extends TestCase
         $user = new User('martin@example.com', ' ');
     }
 
+    public function testCanUpdateEmailAndUsername(): void
+    {
+        $this->user->setEmail('martinfowler@example.com');
+        $this->user->setUsername('martin');
+
+        $this->assertEquals('martinfowler@example.com', $this->user->getEmail());
+        $this->assertEquals('martin', $this->user->getUsername());
+    }
+
     public function testCanBookRoom(): void
     {
-        $user = new User('martin@example.com', 'martinfowler');
         $room = new Room('Room 237');
 
-        $user->book($room, new DatePoint('today'), new DatePoint('tomorrow'));
-        $this->assertCount(1, $user->getBookings());
+        $this->user->book($room, new DatePoint('today'), new DatePoint('tomorrow'));
+        $this->assertCount(1, $this->user->getBookings());
         $this->assertCount(1, $room->getBookings());
     }
 }

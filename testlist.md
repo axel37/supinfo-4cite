@@ -33,6 +33,7 @@ Book a room ?
 ~~Remove picture~~
 ~~See description
 Hotel with no description is ok~~
+Update
 
 # Picture
 
@@ -48,3 +49,6 @@ invalid email format ? (handled by validator ?)
 ~~username~~
 (password)
 (role)
+Update user
+update invalid email
+update invalid name

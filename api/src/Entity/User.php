@@ -40,4 +40,14 @@ class User
     {
         return $this->bookings;
     }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
 }
