@@ -1,3 +1,5 @@
+[![CI](https://github.com/axel37/supinfo-4cite/actions/workflows/ci.yml/badge.svg)](https://github.com/axel37/supinfo-4cite/actions/workflows/ci.yml)
+
 `docker compose build --no-cache` : Build images
 
 `docker compose up --wait` : Start services
