@@ -15,7 +15,7 @@ class Room implements BookableInterface
 {
     /** @var Collection<Booking> */
     private Collection $bookings;
-    public function __construct()
+    public function __construct(private string $name)
     {
         $this->bookings = new ArrayCollection();
     }
@@ -50,5 +50,10 @@ class Room implements BookableInterface
     public function getBookings(): iterable
     {
         return new ArrayCollection($this->bookings->toArray());
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

@@ -18,6 +18,7 @@ No aliasing (= defensive copies)
 ~~Booking can start / end on same day as another~~
 Test for aliasing bugs (= defensive copies of dates)
 Has name
+Invalid name
 
 # Hotel
 

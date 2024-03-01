@@ -17,96 +17,102 @@ class RoomTest extends TestCase
      * - "SameDay" = On the same day as booking start/end
      */
 
+    private Room $room;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->room = new Room('Room 237');
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->room);
+    }
+
+    public function testCanReadName(): void
+    {
+        $room = new Room('Room 237');
+        $this->assertEquals('Room 237', $room->getName());
+    }
+
     public function testCanStartOrEndOnSameDay(): void
     {
-        $room = new Room();
-
         $today = new DatePoint('today');
         $tomorrow = new DatePoint('tomorrow');
         $dayAfterTomorrow = new DatePoint('tomorrow + 1 day');
 
-        $room->book($today, $tomorrow);
-        $room->book($tomorrow, $dayAfterTomorrow);
+        $this->room->book($today, $tomorrow);
+        $this->room->book($tomorrow, $dayAfterTomorrow);
 
-        $this->assertCount(2, $room->getBookings());
+        $this->assertCount(2, $this->room->getBookings());
     }
 
     public function testUnavailableStartsBeforeEndsDuring(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('today');
         $invalidEnd1 = new DatePoint('today + 3 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
     public function testUnavailableStartsBeforeEndsAfter(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('today');
         $invalidEnd1 = new DatePoint('tomorrow + 10 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
     public function testUnavailableStartsDuringEndsAfter(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('tomorrow + 1 day');
         $invalidEnd1 = new DatePoint('tomorrow + 10 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
     public function testUnavailableStartsDuringEndsDuring(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('tomorrow + 1 day');
         $invalidEnd1 = new DatePoint('tomorrow + 2 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
     public function testUnavailableStartsSameDayEndsDuring(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('tomorrow');
         $invalidEnd1 = new DatePoint('tomorrow + 2 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
     public function testUnavailableStartsDuringEndsSameDay(): void
     {
-        $room = new Room();
-
         $validStartDate = new DatePoint('tomorrow');
         $validEndDate = new DatePoint('tomorrow + 3 days');
-        $room->book($validStartDate, $validEndDate);
+        $this->room->book($validStartDate, $validEndDate);
 
         $invalidStart1 = new DatePoint('tomorrow + 1 day');
         $invalidEnd1 = new DatePoint('tomorrow + 3 days');
         $this->expectException(RoomUnavailableForBookingException::class);
-        $room->book($invalidStart1, $invalidEnd1);
+        $this->room->book($invalidStart1, $invalidEnd1);
     }
 }
