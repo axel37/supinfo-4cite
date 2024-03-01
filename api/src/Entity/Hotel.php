@@ -13,7 +13,7 @@ class Hotel
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms)
+    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms, private ?string $description = null)
     {
         if (trim($this->name) === '') {
             throw new EmptyNameException();
@@ -48,5 +48,10 @@ class Hotel
             }
         }
         return $bookings;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 }

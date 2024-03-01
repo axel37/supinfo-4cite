@@ -28,7 +28,8 @@ Book a room
 ~~Invalid name~~
 ~~Invalid location~~
 See pictures
-See name
+~~See description
+Hotel with no description is ok~~
 
 # User
 
