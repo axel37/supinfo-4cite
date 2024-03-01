@@ -99,9 +99,12 @@ class HotelTest extends TestCase
         $this->assertCount(4, $this->hotel->getBookings());
     }
 
-    public function testCanUpdateName(): void
+    public function testCanUpdateNameAndLocation(): void
     {
         $this->hotel->setName('Parkside Hotel');
-        self::assertEquals('Parkside Hotel', $this->hotel->getName());
+        $this->assertEquals('Parkside Hotel', $this->hotel->getName());
+
+        $this->hotel->setLocation('Evergreen Park');
+        $this->assertEquals('Evergreen Park', $this->hotel->getLocation());
     }
 }

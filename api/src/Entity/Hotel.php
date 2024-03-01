@@ -76,4 +76,9 @@ class Hotel
     {
         $this->name = $name;
     }
+
+    public function setLocation(string $location): void
+    {
+        $this->location = $location;
+    }
 }
