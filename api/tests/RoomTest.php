@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Room;
+use App\Exception\EmptyNameException;
 use App\Exception\RoomUnavailableForBookingException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
@@ -35,6 +36,12 @@ class RoomTest extends TestCase
     {
         $room = new Room('Room 237');
         $this->assertEquals('Room 237', $room->getName());
+    }
+
+    public function testFailOnInvalidName(): void
+    {
+        $this->expectException(EmptyNameException::class);
+        $room = new Room(' ');
     }
 
     public function testCanStartOrEndOnSameDay(): void
