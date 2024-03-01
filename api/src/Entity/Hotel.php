@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
@@ -12,10 +13,13 @@ class Hotel
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms)
+    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private readonly iterable $rooms)
     {
         if (trim($this->name) === '') {
             throw new EmptyNameException();
+        }
+        if (trim($this->name) === '') {
+            throw new EmptyLocationException();
         }
     }
 

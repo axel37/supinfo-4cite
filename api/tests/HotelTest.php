@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Entity\Hotel;
 use App\Entity\Room;
+use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
@@ -26,7 +27,7 @@ class HotelTest extends TestCase
         $this->roomB = new Room();
         $this->roomC = new Room();
         $this->rooms = [$this->roomA, $this->roomB, $this->roomC];
-        $this->hotel = new Hotel('Grand Hotel', $this->rooms);
+        $this->hotel = new Hotel('Grand Hotel', 'Pine Street', $this->rooms);
     }
 
     protected function tearDown(): void
@@ -38,7 +39,13 @@ class HotelTest extends TestCase
     public function testFailsOnEmptyName(): void
     {
         $this->expectException(EmptyNameException::class);
-        $hotel = new Hotel('  ', []);
+        $hotel = new Hotel('  ', 'Pine Street', []);
+    }
+
+    public function testFailsOnEmptyLocation(): void
+    {
+        $this->expectException(EmptyLocationException::class);
+        $hotel = new Hotel('Grand Hotel', '  ', []);
     }
 
     public function testCanSeeRooms(): void
