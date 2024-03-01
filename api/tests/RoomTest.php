@@ -50,6 +50,12 @@ class RoomTest extends TestCase
         $this->assertEquals('Presidential Suite', $this->room->getName());
     }
 
+    public function testFailsOnUpdateInvalidName(): void
+    {
+        $this->expectException(EmptyNameException::class);
+        $this->room->setName(' ');
+    }
+
     public function testCanStartOrEndOnSameDay(): void
     {
         $today = new DatePoint('today');

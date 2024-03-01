@@ -21,7 +21,7 @@ Test for aliasing bugs (= defensive copies of dates)
 ~~Has name
 Invalid name~~
 ~~Update~~
-update invalid name
+~~update invalid name~~
 
 # Hotel
 
