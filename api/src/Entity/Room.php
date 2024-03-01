@@ -19,9 +19,7 @@ class Room implements BookableInterface
     private Collection $bookings;
     public function __construct(private string $name)
     {
-        if (trim($this->name) === '') {
-            throw new EmptyNameException();
-        }
+        $this->setName($name);
 
         $this->bookings = new ArrayCollection();
     }
@@ -62,5 +60,13 @@ class Room implements BookableInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        if (trim($name) === '') {
+            throw new EmptyNameException();
+        }
+        $this->name = $name;
     }
 }
