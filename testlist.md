@@ -20,7 +20,7 @@ Cancel ?
 Test for aliasing bugs (= defensive copies of dates)
 ~~Has name
 Invalid name~~
-Update
+~~Update~~
 update invalid name
 
 # Hotel
