@@ -61,3 +61,5 @@ update invalid name~~
 # API Tests
 
 ## Hotel
+
+Create hotel
