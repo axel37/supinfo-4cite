@@ -8,6 +8,7 @@ use App\Exception\BookingStartsAndEndsOnSameDayException;
 use App\Exception\EmptyNameException;
 use App\Exception\RoomUnavailableForBookingException;
 use App\Hotel\BookableInterface;
+use App\Hotel\BookingInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Clock\DatePoint;
@@ -31,13 +32,14 @@ class Room implements BookableInterface
      * @throws BookingStartsAndEndsOnSameDayException
      * @throws BookingEndsBeforeStartingException
      */
-    public function book(\DateTimeInterface $startDate, \DateTimeInterface $endDate): void
+    public function book(\DateTimeInterface $startDate, \DateTimeInterface $endDate): BookingInterface
     {
         $booking = new Booking($startDate, $endDate);
         if ($this->hasBookingAtDates($startDate, $endDate)) {
             throw new RoomUnavailableForBookingException();
         }
         $this->bookings->add($booking);
+        return $booking;
     }
 
     private function hasBookingAtDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate): bool

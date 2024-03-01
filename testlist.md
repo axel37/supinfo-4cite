@@ -11,6 +11,7 @@ End must be before start~~
 Can get start
 Can get end
 No aliasing (= defensive copies)
+Cancel ?
 
 ## Room
 
@@ -40,7 +41,8 @@ Hotel with no description is ok~~
 
 # User
 
-Find all user's bookings
+~~make a booking~~
+~~Find all user's bookings~~
 ~~email~~
 invalid email format ? (handled by validator ?)
 ~~username~~
