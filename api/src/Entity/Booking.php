@@ -9,15 +9,15 @@ use Symfony\Component\Clock\DatePoint;
 
 readonly class Booking
 {
-    public DatePoint $startDate;
-    public DatePoint $endDate;
+    public \DateTimeInterface $startDate;
+    public \DateTimeInterface $endDate;
 
     /**
      * @throws BookingInThePastException Bookings can't be made for past dates.
      * @throws BookingEndsBeforeStartingException Start date must be before end date.
      * @throws BookingStartsAndEndsOnSameDayException Start and end must be on different days.
      */
-    public function __construct(DatePoint $startDate, DatePoint $endDate)
+    public function __construct(\DateTimeInterface $startDate, \DateTimeInterface $endDate)
     {
         $today = new DatePoint('today');
         if ($startDate < $today) {
