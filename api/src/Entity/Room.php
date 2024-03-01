@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Exception\BookingEndsBeforeStartingException;
 use App\Exception\BookingInThePastException;
 use App\Exception\BookingStartsAndEndsOnSameDayException;
+use App\Exception\EmptyNameException;
 use App\Exception\RoomUnavailableForBookingException;
 use App\Hotel\BookableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,8 +16,12 @@ class Room implements BookableInterface
 {
     /** @var Collection<Booking> */
     private Collection $bookings;
-    public function __construct()
+    public function __construct(private string $name)
     {
+        if (trim($this->name) === '') {
+            throw new EmptyNameException();
+        }
+
         $this->bookings = new ArrayCollection();
     }
 
@@ -50,5 +55,10 @@ class Room implements BookableInterface
     public function getBookings(): iterable
     {
         return new ArrayCollection($this->bookings->toArray());
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

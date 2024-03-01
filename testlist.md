@@ -17,7 +17,8 @@ No aliasing (= defensive copies)
 ~~Booking fails when room has overlapping bookings~~
 ~~Booking can start / end on same day as another~~
 Test for aliasing bugs (= defensive copies of dates)
-Has name
+~~Has name
+Invalid name~~
 
 # Hotel
 

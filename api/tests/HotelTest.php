@@ -24,9 +24,9 @@ class HotelTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->roomA = new Room();
-        $this->roomB = new Room();
-        $this->roomC = new Room();
+        $this->roomA = new Room('Room A');
+        $this->roomB = new Room('Room B');
+        $this->roomC = new Room('Room C');
         $this->rooms = [$this->roomA, $this->roomB, $this->roomC];
         $this->hotel = new Hotel('Grand Hotel', 'Pine Street', $this->rooms);
     }
