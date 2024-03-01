@@ -12,4 +12,4 @@ End must be before start~~
 ## Room
 
 ~~Booking fails when room has overlapping bookings~~
-Booking can start / end on same day as another
+~~Booking can start / end on same day as another~~
