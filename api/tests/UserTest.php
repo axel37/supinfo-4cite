@@ -58,6 +58,12 @@ class UserTest extends TestCase
         $this->user->setEmail(' ');
     }
 
+    public function testFailOnUpdateInvalidUsername(): void
+    {
+        $this->expectException(EmptyNameException::class);
+        $this->user->setUsername(' ');
+    }
+
     public function testCanBookRoom(): void
     {
         $room = new Room('Room 237');

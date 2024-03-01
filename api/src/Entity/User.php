@@ -14,9 +14,7 @@ class User
     public function __construct(private string $email, private string $username)
     {
         $this->setEmail($this->email);
-        if (trim($this->username) === '') {
-            throw new EmptyNameException();
-        }
+        $this->setUsername($this->username);
     }
 
     public function getEmail(): string
@@ -49,6 +47,9 @@ class User
 
     public function setUsername(string $username): void
     {
+        if (trim($username) === '') {
+            throw new EmptyNameException();
+        }
         $this->username = $username;
     }
 }
