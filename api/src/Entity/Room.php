@@ -45,9 +45,9 @@ class Room implements BookableInterface
     /**
      * Returns a copy of this room's bookings.
      *
-     * @returns Collection<Booking>
+     * @returns iterable<Booking>
      */
-    public function getBookings(): Collection
+    public function getBookings(): iterable
     {
         return new ArrayCollection($this->bookings->toArray());
     }

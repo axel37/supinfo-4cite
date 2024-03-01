@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Exception\BookingEndsBeforeStartingException;
 use App\Exception\BookingInThePastException;
 use App\Exception\BookingStartsAndEndsOnSameDayException;
+use App\Hotel\BookingInterface;
 use Symfony\Component\Clock\DatePoint;
 
-readonly class Booking
+readonly class Booking implements BookingInterface
 {
     public \DateTimeInterface $startDate;
     public \DateTimeInterface $endDate;
@@ -32,5 +33,15 @@ readonly class Booking
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+    }
+
+    public function getStart(): \DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function getEnd(): \DateTimeInterface
+    {
+        return $this->endDate;
     }
 }
