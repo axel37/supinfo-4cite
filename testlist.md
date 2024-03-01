@@ -13,3 +13,16 @@ End must be before start~~
 
 ~~Booking fails when room has overlapping bookings~~
 ~~Booking can start / end on same day as another~~
+
+# Hotel
+
+See rooms
+Book a room
+See bookings
+See location
+See pictures
+See name
+
+# User
+
+Find all user's bookings
