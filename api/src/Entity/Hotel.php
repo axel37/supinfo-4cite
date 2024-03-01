@@ -66,4 +66,9 @@ class Hotel
     {
         $this->pictures[] = $picture;
     }
+
+    public function removePicture(Picture $picture): void
+    {
+        $this->pictures = array_udiff($this->pictures, [$picture], static fn(Picture $a, Picture $b) => $a <=> $b);
+    }
 }

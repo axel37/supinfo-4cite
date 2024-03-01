@@ -23,12 +23,12 @@ Has name
 
 ~~See hotel's rooms~~
 ~~See hotel's bookings~~
-Book a room
+Book a room ?
 ~~Create with valid name and location~~
 ~~Invalid name~~
 ~~Invalid location~~
-See pictures
-Remove picture
+~~See pictures~~
+~~Remove picture~~
 ~~See description
 Hotel with no description is ok~~
 

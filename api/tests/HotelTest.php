@@ -63,7 +63,7 @@ class HotelTest extends TestCase
         $hotel = new Hotel('Grand Hotel', '  ', []);
     }
 
-    public function testCanReadPictures(): void
+    public function testCanAddAndRemovePictures(): void
     {
         $pictureA = new Picture('/pictures/a.jpg');
         $pictureB = new Picture('/pictures/B.jpg');
@@ -73,6 +73,11 @@ class HotelTest extends TestCase
 
         $this->assertCount(2, $this->hotel->getPictures());
         $this->assertContains($pictureA, $this->hotel->getPictures());
+        $this->assertContains($pictureB, $this->hotel->getPictures());
+
+        $this->hotel->removePicture($pictureA);
+        $this->assertCount(1, $this->hotel->getPictures());
+        $this->assertNotContains($pictureA, $this->hotel->getPictures());
         $this->assertContains($pictureB, $this->hotel->getPictures());
     }
 
