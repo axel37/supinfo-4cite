@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
+use App\Exception\RoomAlreadyInHotelException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
 
@@ -91,6 +92,9 @@ class Hotel
 
     public function addRoom(Room $room): void
     {
+        if (in_array($room, $this->rooms)) {
+            throw new RoomAlreadyInHotelException();
+        }
         $this->rooms[] = $room;
     }
 }

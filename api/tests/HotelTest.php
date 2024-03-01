@@ -7,6 +7,7 @@ use App\Entity\Picture;
 use App\Entity\Room;
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
+use App\Exception\RoomAlreadyInHotelException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
 
@@ -129,5 +130,11 @@ class HotelTest extends TestCase
     {
         $this->expectException(EmptyLocationException::class);
         $this->hotel->setLocation(' ');
+    }
+
+    public function testFailsOnAddRoomAlreadyInHotel(): void
+    {
+        $this->expectException(RoomAlreadyInHotelException::class);
+        $this->hotel->addRoom($this->roomA);
     }
 }
