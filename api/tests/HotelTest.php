@@ -118,4 +118,16 @@ class HotelTest extends TestCase
         $this->assertCount(3, $this->hotel->getRooms());
         $this->assertContains($newRoom, $this->hotel->getRooms());
     }
+
+    public function testFailsOnUpdateInvalidName(): void
+    {
+        $this->expectException(EmptyNameException::class);
+        $this->hotel->setName(' ');
+    }
+
+    public function testFailsOnUpdateInvalidLocation(): self
+    {
+        $this->expectException(EmptyLocationException::class);
+        $this->hotel->setLocation(' ');
+    }
 }

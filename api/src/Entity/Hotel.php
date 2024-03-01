@@ -17,12 +17,8 @@ class Hotel
      */
     public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private iterable $rooms, private ?string $description = null)
     {
-        if (trim($this->name) === '') {
-            throw new EmptyNameException();
-        }
-        if (trim($this->location) === '') {
-            throw new EmptyLocationException();
-        }
+        $this->setName($name);
+        $this->setLocation($location);
     }
 
     public function getName(): string
@@ -74,11 +70,17 @@ class Hotel
 
     public function setName(string $name): void
     {
+        if (trim($name) === '') {
+            throw new EmptyNameException();
+        }
         $this->name = $name;
     }
 
     public function setLocation(string $location): void
     {
+        if (trim($location) === '') {
+            throw new EmptyLocationException();
+        }
         $this->location = $location;
     }
 
