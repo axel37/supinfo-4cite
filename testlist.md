@@ -41,3 +41,7 @@ Hotel with no description is ok~~
 # User
 
 Find all user's bookings
+~~email~~
+username
+(password)
+(role)
