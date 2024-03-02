@@ -9,18 +9,34 @@ use App\Exception\EmptyNameException;
 use App\Exception\RoomUnavailableForBookingException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
+use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Clock\DatePoint;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\DBAL\Types\Types;
 
+#[Entity(repositoryClass: RoomRepository::class)]
 class Room implements BookableInterface
 {
+
+    #[Column(type: Types::GUID)]
+    #[Id]
+    private Uuid $id;
+
+//    #[OneToMany(targetEntity: Booking::class, mappedBy: 'room')]
     /** @var Collection<Booking> */
     private Collection $bookings;
-    public function __construct(private string $name)
+    #[Column]
+    private string $name;
+    public function __construct(string $name)
     {
+        $this->id = Uuid::v4();
         $this->setName($name);
-
         $this->bookings = new ArrayCollection();
     }
 
@@ -68,5 +84,10 @@ class Room implements BookableInterface
             throw new EmptyNameException();
         }
         $this->name = $name;
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
     }
 }

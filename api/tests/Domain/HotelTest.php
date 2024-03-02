@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain;
 
 use App\Entity\Hotel;
 use App\Entity\Picture;
@@ -10,8 +10,6 @@ use App\Exception\EmptyNameException;
 use App\Exception\RoomAlreadyInHotelException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
-
-use function PHPUnit\Framework\assertCount;
 
 class HotelTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain;
 
 use App\Entity\Booking;
 use App\Exception\BookingEndsBeforeStartingException;

@@ -59,6 +59,12 @@ invalid email format ? (handled by validator ?)
 update invalid email
 update invalid name~~
 
+# Entity/Doctrine Testing
+
+## Room
+
+Can create a room, and retrieve it from db
+
 # API Tests
 
 ## Hotel
