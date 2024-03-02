@@ -8,11 +8,11 @@ class HotelTest extends ApiTestCase
 {
     public function testCanCreateHotel(): void
     {
-        // TODO : "/hotel" may not be correct... could it be /hotels ? We'll see ;)
-        static::createClient()->request('POST', '/hotel', [
+        static::createClient()->request('POST', '/hotels', [
             'json' => [
                 'name' => 'Grand Hotel',
                 'location' => 'Pine Street',
+                'rooms' => []
             ],
             'headers' => [
                 'Content-Type' => 'application/ld+json',
@@ -21,7 +21,7 @@ class HotelTest extends ApiTestCase
 
         self::assertResponseStatusCodeSame(201);
         self::assertJsonContains([
-            '@context' => '/contexts/hotel',
+            '@context' => '/contexts/Hotel',
             '@type' => 'Hotel',
             'name' => 'Grand Hotel',
             'location' => 'Pine Street',

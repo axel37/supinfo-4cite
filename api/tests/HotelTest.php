@@ -137,4 +137,10 @@ class HotelTest extends TestCase
         $this->expectException(RoomAlreadyInHotelException::class);
         $this->hotel->addRoom($this->roomA);
     }
+
+    public function testCanCreateHotelWithoutRooms(): void
+    {
+        $hotel = new Hotel('Grand Hotel', 'Pine Street');
+        $this->assertCount(0, $hotel->getRooms());
+    }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
 use App\Exception\RoomAlreadyInHotelException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
 
+#[ApiResource]
 class Hotel
 {
     /** @var Picture[] $pictures */
@@ -16,7 +18,7 @@ class Hotel
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms Hello */ private iterable $rooms, private ?string $description = null)
+    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms */ private iterable $rooms = [], private ?string $description = null)
     {
         $this->setName($name);
         $this->setLocation($location);
