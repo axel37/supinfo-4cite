@@ -63,7 +63,8 @@ update invalid name~~
 
 ## Room
 
-Can create a room, and retrieve it from db
+~~Can create a room, and retrieve it from db~~
+Can get bookings
 
 # API Tests
 
