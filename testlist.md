@@ -39,7 +39,7 @@ Hotel with no description is ok~~
 update invalid name
 update invalid location~~
 ~~room already in hotel~~
-Create hotel without rooms
+~~Create hotel without rooms~~
 
 ## Picture
 
@@ -63,5 +63,7 @@ update invalid name~~
 
 ## Hotel
 
-Create hotel
-Can create hotel without rooms
+~~Create hotel
+Can create hotel without rooms~~
+Invalid name
+Invalid location

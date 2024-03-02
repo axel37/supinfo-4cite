@@ -12,7 +12,6 @@ class HotelTest extends ApiTestCase
             'json' => [
                 'name' => 'Grand Hotel',
                 'location' => 'Pine Street',
-                'rooms' => []
             ],
             'headers' => [
                 'Content-Type' => 'application/ld+json',
@@ -25,6 +24,7 @@ class HotelTest extends ApiTestCase
             '@type' => 'Hotel',
             'name' => 'Grand Hotel',
             'location' => 'Pine Street',
+            'rooms' => [],
         ]);
     }
 }
