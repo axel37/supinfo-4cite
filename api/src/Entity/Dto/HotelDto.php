@@ -3,6 +3,8 @@
 namespace App\Entity\Dto;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Room;
+use App\Hotel\BookableInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource(shortName: 'Hotel')]
@@ -12,7 +14,8 @@ class HotelDto
     private string $name;
     #[NotBlank]
     private string $location;
-    private iterable $rooms;
+    /** @var Room[] */
+    private array $rooms;
     #[NotBlank(allowNull: true)]
     private ?string $description;
 
@@ -22,7 +25,7 @@ class HotelDto
      * @param iterable $rooms
      * @param string $description
      */
-    public function __construct(string $name, string $location, iterable $rooms = [], ?string $description = null)
+    public function __construct(string $name, string $location, array $rooms = [], ?string $description = null)
     {
         $this->name = $name;
         $this->location = $location;
@@ -60,7 +63,7 @@ class HotelDto
         $this->description = $description;
     }
 
-    public function getRooms(): iterable
+    public function getRooms(): array
     {
         return $this->rooms;
     }

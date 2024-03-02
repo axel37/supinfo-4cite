@@ -56,4 +56,6 @@ class HotelTest extends ApiTestCase
         ]);
         self::assertResponseStatusCodeSame(422);
     }
+
+
 }
