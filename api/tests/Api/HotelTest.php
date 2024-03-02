@@ -27,4 +27,18 @@ class HotelTest extends ApiTestCase
             'rooms' => [],
         ]);
     }
+
+    public function testFailsOnInvalidName(): void
+    {
+        static::createClient()->request('POST', '/hotels', [
+            'json' => [
+                'name' => '',
+                'location' => 'Pine Street',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(422);
+    }
 }

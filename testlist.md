@@ -65,5 +65,9 @@ update invalid name~~
 
 ~~Create hotel
 Can create hotel without rooms~~
-Invalid name
+~~Invalid name~~
 Invalid location
+Make sure validation runs !!
+Add room
+Remove room
+Can get hotel after creating it ? ("fixtures are automatically loaded between each test !" $client->disableReboot()

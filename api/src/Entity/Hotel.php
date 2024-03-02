@@ -9,7 +9,6 @@ use App\Exception\RoomAlreadyInHotelException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
 
-#[ApiResource]
 class Hotel
 {
     /** @var Picture[] $pictures */
