@@ -23,12 +23,11 @@ use Doctrine\DBAL\Types\Types;
 #[Entity(repositoryClass: RoomRepository::class)]
 class Room implements BookableInterface
 {
-
     #[Column(type: Types::GUID)]
     #[Id]
     private Uuid $id;
 
-//    #[OneToMany(targetEntity: Booking::class, mappedBy: 'room')]
+    #[OneToMany(mappedBy: 'room', targetEntity: Booking::class, cascade: ['persist'])]
     /** @var Collection<Booking> */
     private Collection $bookings;
     #[Column]
@@ -48,7 +47,7 @@ class Room implements BookableInterface
      */
     public function book(\DateTimeInterface $startDate, \DateTimeInterface $endDate): BookingInterface
     {
-        $booking = new Booking($startDate, $endDate);
+        $booking = new Booking($this, $startDate, $endDate);
         if ($this->hasBookingAtDates($startDate, $endDate)) {
             throw new RoomUnavailableForBookingException();
         }
@@ -59,7 +58,7 @@ class Room implements BookableInterface
     private function hasBookingAtDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate): bool
     {
         return $this->bookings->exists(
-            fn(int $index, Booking $booking) => $booking->startDate < $endDate && $booking->endDate > $startDate
+            fn(int $index, Booking $booking) => $booking->getStart() < $endDate && $booking->getEnd() > $startDate
         );
     }
 

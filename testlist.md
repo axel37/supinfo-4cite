@@ -12,6 +12,7 @@ Can get start
 Can get end
 No aliasing (= defensive copies)
 Cancel ?
+Can read room
 
 ## Room
 

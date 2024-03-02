@@ -6,20 +6,38 @@ use App\Exception\BookingEndsBeforeStartingException;
 use App\Exception\BookingInThePastException;
 use App\Exception\BookingStartsAndEndsOnSameDayException;
 use App\Hotel\BookingInterface;
+use App\Repository\BookingRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Component\Clock\DatePoint;
+use Symfony\Component\Uid\Uuid;
 
+#[Entity(repositoryClass: BookingRepository::class)]
 readonly class Booking implements BookingInterface
 {
-    public \DateTimeInterface $startDate;
-    public \DateTimeInterface $endDate;
+    #[Column(type: Types::GUID)]
+    #[Id]
+    private Uuid $id;
+    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    private \DateTimeInterface $startDate;
+    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    private \DateTimeInterface $endDate;
+
+    #[ManyToOne(targetEntity: Room::class, inversedBy: 'bookings')]
+    private Room $room;
 
     /**
      * @throws BookingInThePastException Bookings can't be made for past dates.
      * @throws BookingEndsBeforeStartingException Start date must be before end date.
      * @throws BookingStartsAndEndsOnSameDayException Start and end must be on different days.
      */
-    public function __construct(\DateTimeInterface $startDate, \DateTimeInterface $endDate)
+    public function __construct(Room $room, \DateTimeInterface $startDate, \DateTimeInterface $endDate)
     {
+        $this->id = Uuid::v4();
+
         $today = new DatePoint('today');
         if ($startDate < $today) {
             throw new BookingInThePastException();
@@ -33,6 +51,8 @@ readonly class Booking implements BookingInterface
 
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+
+        $this->room = $room;
     }
 
     public function getStart(): \DateTimeInterface
@@ -43,5 +63,15 @@ readonly class Booking implements BookingInterface
     public function getEnd(): \DateTimeInterface
     {
         return $this->endDate;
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
+
+    public function getRoom(): Room
+    {
+        return $this->room;
     }
 }
