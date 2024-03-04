@@ -62,6 +62,20 @@ class RoomTest extends ApiTestCase
         self::assertResponseStatusCodeSame(422);
     }
 
+    public function testFailsOnNoHotelProvided(): void
+    {
+        static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'hotelId' => '',
+                'name' => 'Room ABC',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(422);
+    }
+
     public function xtestCreateThenFindRoom(): void
     {
         // TODO : Implement this. Pre-requisite : must load a hotel.

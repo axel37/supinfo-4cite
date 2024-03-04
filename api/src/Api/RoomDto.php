@@ -6,17 +6,20 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Exception\DtoIdAlreadySetException;
 use App\State\RoomStateProcessor;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(shortName: 'Room', processor: RoomStateProcessor::class)]
 class RoomDto
 {
-    #[NotBlank]
+    #[Assert\NotBlank]
     private string $name;
     private Uuid $id;
-    private Uuid $hotelId;
 
-    public function __construct(Uuid $hotelId, string $name)
+    #[Assert\Uuid]
+    #[Assert\NotBlank]
+    private string $hotelId;
+
+    public function __construct(string $hotelId, string $name)
     {
         $this->hotelId = $hotelId;
         $this->name = $name;
@@ -32,12 +35,12 @@ class RoomDto
         $this->name = $name;
     }
 
-    public function getId(): Uuid
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getHotelId(): Uuid
+    public function getHotelId(): string
     {
         return $this->hotelId;
     }
