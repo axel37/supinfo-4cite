@@ -184,4 +184,44 @@ class RoomTest extends ApiTestCase
         ]);
     }
 
+    public function testDeleteRoom(): void
+    {
+        $response = static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'hotelId' => $this->hotelId,
+                'name' => 'Room to be deleted',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+
+        // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $roomId = $data['@id'];
+
+        // Check that there is now 1 room
+        static::createClient()->request('GET', '/rooms');
+        self::assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@id' => '/rooms',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 1,
+        ]);
+
+        // Make a request to delete the room
+        static::createClient()->request('DELETE', $roomId);
+        self::assertResponseStatusCodeSame(204);
+
+        // Check that there are now 0 rooms
+        static::createClient()->request('GET', '/rooms');
+        self::assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@id' => '/rooms',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 0,
+        ]);
+    }
 }

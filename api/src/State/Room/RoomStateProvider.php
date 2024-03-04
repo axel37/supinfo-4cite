@@ -5,6 +5,7 @@ namespace App\State\Room;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Doctrine\Orm\State\Options;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
@@ -14,7 +15,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Api\Assembler\RoomAssembler;
 use App\Api\RoomDto;
 use App\Entity\Room;
-use App\Exception\OperationNotImplementedException;
+use App\Exception\ProviderOperationNotImplementedException;
 
 class RoomStateProvider implements ProviderInterface
 {
@@ -29,9 +30,10 @@ class RoomStateProvider implements ProviderInterface
     {
         return match (true) {
             $operation instanceof Get,
-                $operation instanceof Patch => $this->getOne($operation, $uriVariables, $context),
+                $operation instanceof Patch,
+                $operation instanceof Delete => $this->getOne($operation, $uriVariables, $context),
             $operation instanceof GetCollection => $this->getCollection($operation, $uriVariables, $context),
-            default => throw new OperationNotImplementedException()
+            default => throw new ProviderOperationNotImplementedException()
         };
     }
 
