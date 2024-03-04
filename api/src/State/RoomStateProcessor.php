@@ -4,7 +4,6 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\Assembler\RoomAssembler;
 use App\Api\RoomDto;
@@ -32,10 +31,9 @@ class RoomStateProcessor implements ProcessorInterface
         if (!$data instanceof RoomDto) {
             throw new UnsupportedDtoException();
         }
-        var_dump($operation);
+
         return match (true) {
             $operation instanceof Post => $this->post($data),
-            $operation instanceof Put => $this->put($data),
             default => throw new OperationNotImplementedException()
         };
     }
@@ -51,7 +49,7 @@ class RoomStateProcessor implements ProcessorInterface
         return $this->assembler->createDtoFromRoom($room);
     }
 
-    public function put(RoomDto $dto): RoomDto
+    public function patch(RoomDto $dto): RoomDto
     {
         $room = $this->roomRepository->find($dto->getId());
         if (!isset($room)) {
