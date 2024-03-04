@@ -35,6 +35,7 @@ class RoomTest extends KernelTestCase
         $this->hotel = new Hotel('Grand hotel', 'Pine street');
         $this->room = new Room($this->hotel,'Room 237');
         $this->roomId = $this->room->getId();
+        $this->em->persist($this->hotel);
         $this->em->persist($this->room);
         $this->em->flush();
     }
