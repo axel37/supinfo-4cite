@@ -16,7 +16,7 @@ class HotelTest extends KernelTestCase
     private EntityManagerInterface $em;
     private HotelRepository $hotelRepository;
     private Uuid $hotelId;
-    private Hotel $hotel;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,9 +26,9 @@ class HotelTest extends KernelTestCase
         $this->em = $this->container->get('doctrine')->getManager();
         $this->hotelRepository = $this->container->get(HotelRepository::class);
 
-        $this->hotel = new Hotel('Grand Hotel', 'Pine Street');
-        $this->hotelId = $this->hotel->getId();
-        $this->em->persist($this->hotel);
+        $hotel = new Hotel('Grand Hotel', 'Pine Street');
+        $this->hotelId = $hotel->getId();
+        $this->em->persist($hotel);
         $this->em->flush();
     }
 
