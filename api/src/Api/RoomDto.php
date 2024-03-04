@@ -2,17 +2,21 @@
 
 namespace App\Api;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Exception\DtoIdAlreadySetException;
 use App\State\RoomStateProcessor;
+use App\State\RoomStateProvider;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource(shortName: 'Room', processor: RoomStateProcessor::class)]
+#[ApiResource(shortName: 'Room', provider: RoomStateProvider::class, processor: RoomStateProcessor::class)]
 class RoomDto
 {
     #[Assert\NotBlank]
     private string $name;
+
+    #[ApiProperty(identifier: true)]
     private Uuid $id;
 
     #[Assert\Uuid]

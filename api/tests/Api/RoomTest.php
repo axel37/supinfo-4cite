@@ -15,6 +15,7 @@ class RoomTest extends ApiTestCase
     private HotelRepository $hotelRepository;
     private EntityManagerInterface $em;
     private Uuid $hotelId;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -76,11 +77,11 @@ class RoomTest extends ApiTestCase
         self::assertResponseStatusCodeSame(422);
     }
 
-    public function xtestCreateThenFindRoom(): void
+    public function testCreateThenFindRoom(): void
     {
-        // TODO : Implement this. Pre-requisite : must load a hotel.
         $response = static::createClient()->request('POST', '/rooms', [
             'json' => [
+                'hotelId' => $this->hotelId,
                 'name' => 'Room 237',
             ],
             'headers' => [
@@ -89,8 +90,18 @@ class RoomTest extends ApiTestCase
         ]);
 
         // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $roomId = $data['@id'];
 
-
+        // Request the newly created room
+        static::createClient()->request('GET', '/rooms');
+        self::assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@id' => '/rooms',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 1,
+        ]);
     }
 
 }

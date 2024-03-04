@@ -91,5 +91,9 @@ Description : null is ok, empty string is not
 
 ## Room
 
-Create room
-Get room/rooms
+~~Create room (POST)
+GET rooms~~
+GET room
+PUT room
+PATCH room
+DELETE room

@@ -7,12 +7,13 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\ProcessorInterface;
 use App\Api\Assembler\RoomAssembler;
 use App\Api\RoomDto;
+use App\Exception\OperationNotImplementedException;
 use App\Exception\UnsupportedDtoException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RoomStateProcessor implements ProcessorInterface
 {
-    public function __construct(private RoomAssembler $assembler, EntityManagerInterface $entityManager)
+    public function __construct(private RoomAssembler $assembler, private EntityManagerInterface $em)
     {
     }
 
@@ -21,15 +22,21 @@ class RoomStateProcessor implements ProcessorInterface
         if (!$data instanceof RoomDto) {
             throw new UnsupportedDtoException();
         }
-        if ($operation instanceof Post) {
-            /** @var RoomDto $dto */
-            $dto = $data;
-            // TODO get RoomDto, make entity from it, persist entity
-            // TODO : How do we handle updates ??
-            // return Room ? or roomdto ?
+        return match (true) {
+            $operation instanceof Post => $this->post($data),
+            default => throw new OperationNotImplementedException()
+        };
 
-            $room = $this->assembler->createRoomFromDto($dto);
-            return $this->assembler->createDtoFromRoom($room);
-        }
+    }
+
+    /*
+     * Turn the DTO into an entity, persist it, and return a matching DTO.
+     */
+    private function post(RoomDto $dto): RoomDto
+    {
+        $room = $this->assembler->createRoomFromDto($dto);
+        $this->em->persist($room);
+        $this->em->flush();
+        return $this->assembler->createDtoFromRoom($room);
     }
 }
