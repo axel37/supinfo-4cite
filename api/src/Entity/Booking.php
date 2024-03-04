@@ -12,13 +12,14 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Clock\DatePoint;
 use Symfony\Component\Uid\Uuid;
 
 #[Entity(repositoryClass: BookingRepository::class)]
 readonly class Booking implements BookingInterface
 {
-    #[Column(type: Types::GUID)]
+    #[Column(type: UuidType::NAME)]
     #[Id]
     private Uuid $id;
     #[Column(type: Types::DATETIME_IMMUTABLE)]

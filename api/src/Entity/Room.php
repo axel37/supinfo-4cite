@@ -16,14 +16,13 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
-use Symfony\Component\Clock\DatePoint;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
-use Doctrine\DBAL\Types\Types;
 
 #[Entity(repositoryClass: RoomRepository::class)]
 class Room implements BookableInterface
 {
-    #[Column(type: Types::GUID)]
+    #[Column(type: UuidType::NAME)]
     #[Id]
     private Uuid $id;
 

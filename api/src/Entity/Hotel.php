@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Exception\EmptyLocationException;
 use App\Exception\EmptyNameException;
 use App\Exception\RoomAlreadyInHotelException;
@@ -10,18 +9,18 @@ use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[Entity]
 class Hotel
 {
     #[Id]
-    #[Column(type: Types::GUID)]
+    #[Column(type: UuidType::NAME)]
     private Uuid $id;
     /** @var Picture[] $pictures */
     private array $pictures = [];
