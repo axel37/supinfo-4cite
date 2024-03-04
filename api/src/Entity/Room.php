@@ -27,7 +27,7 @@ class Room implements BookableInterface
     #[Id]
     private Uuid $id;
 
-    #[OneToMany(mappedBy: 'room', targetEntity: Booking::class, cascade: ['persist'])]
+    #[OneToMany(mappedBy: 'room', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
     /** @var Collection<Booking> */
     private Collection $bookings;
     #[Column]

@@ -2,7 +2,9 @@
 
 namespace App\Tests\Entity;
 
+use ApiPlatform\Elasticsearch\Tests\Fixtures\Book;
 use App\Entity\Room;
+use App\Repository\BookingRepository;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -18,6 +20,7 @@ class RoomTest extends KernelTestCase
     private RoomRepository $roomRepository;
     private $room;
     private $roomId;
+    private BookingRepository $bookingRepository;
 
     protected function setUp(): void
     {
@@ -27,6 +30,7 @@ class RoomTest extends KernelTestCase
         $this->container = static::getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
         $this->roomRepository = $this->container->get(RoomRepository::class);
+        $this->bookingRepository = $this->container->get(BookingRepository::class);
 
         $this->room = new Room('Room 237');
         $this->roomId = $this->room->getId();
@@ -57,5 +61,26 @@ class RoomTest extends KernelTestCase
 
         $roomFromDatabase = $this->roomRepository->find($this->roomId);
         $this->assertCount(1, $roomFromDatabase->getBookings());
+    }
+
+    public function testDeleteRoomCascadesBookings()
+    {
+        $newRoom = new Room('Room to be deleted');
+        $roomId = $newRoom->getId();
+        $newRoom->book(new DatePoint('today'), new DatePoint('tomorrow'));
+        $bookingId = $newRoom->getBookings()[0]->getId();
+
+        $this->em->persist($newRoom);
+        $this->em->flush();
+
+        $roomFromDatabase = $this->roomRepository->find($roomId);
+        $this->assertCount(1, $roomFromDatabase->getBookings());
+
+        $this->em->remove($roomFromDatabase);
+        $this->em->flush();
+
+        $roomFromDatabase = $this->roomRepository->find($roomId);
+        $bookingFromDatabase = $this->bookingRepository->find($bookingId);
+        $this->assertNull($bookingFromDatabase);
     }
 }
