@@ -70,4 +70,29 @@ class HotelTest extends KernelTestCase
         $this->assertCount(0, $hotel->getRooms());
     }
 
+    public function testDeleteHotelCascadesRooms()
+    {
+        $hotelToDelete = new Hotel('Hotel to be deleted', 'Pine Street');
+        $hotelRoomToDelete = new Room('Room to be deleted');
+        $hotelToDelete->addRoom($hotelRoomToDelete);
+
+        $hotelId = $hotelToDelete->getId();
+        $roomId = $hotelRoomToDelete->getId();
+
+        $this->em->persist($hotelToDelete);
+        $this->em->flush();
+
+        $hotelFromDb = $this->hotelRepository->find($hotelId);
+        $this->assertCount(1, $hotelFromDb->getRooms());
+
+        $this->em->remove($hotelFromDb);
+        $this->em->flush();
+
+        $hotelFromDb = $this->hotelRepository->find($hotelId);
+        $this->assertNull($hotelFromDb);
+
+        $roomFromDb = $this->roomRepository->find($roomId);
+        $this->assertNull($roomFromDb);
+    }
+
 }

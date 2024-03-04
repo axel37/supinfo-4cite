@@ -29,7 +29,7 @@ class Hotel
     private string $name;
     #[Column]
     private string $location;
-    #[OneToMany(mappedBy: 'hotel', targetEntity: Room::class, cascade: ['persist'])]
+    #[OneToMany(mappedBy: 'hotel', targetEntity: Room::class, cascade: ['persist', 'remove'])]
     private Collection $rooms;
     #[Column(nullable: true)]
     private ?string $description;

@@ -65,12 +65,12 @@ class RoomTest extends KernelTestCase
 
     public function testDeleteRoomCascadesBookings()
     {
-        $newRoom = new Room('Room to be deleted');
-        $roomId = $newRoom->getId();
-        $newRoom->book(new DatePoint('today'), new DatePoint('tomorrow'));
-        $bookingId = $newRoom->getBookings()[0]->getId();
+        $roomToDelete = new Room('Room to be deleted');
+        $roomId = $roomToDelete->getId();
+        $roomToDelete->book(new DatePoint('today'), new DatePoint('tomorrow'));
+        $bookingId = $roomToDelete->getBookings()[0]->getId();
 
-        $this->em->persist($newRoom);
+        $this->em->persist($roomToDelete);
         $this->em->flush();
 
         $roomFromDatabase = $this->roomRepository->find($roomId);
