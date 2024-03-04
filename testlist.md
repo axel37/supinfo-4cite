@@ -87,6 +87,7 @@ Add room (HOW?? NO ROOM ENDPOINT)
 Create room (Hotel::createRoom)
 Remove room
 Can get hotel after creating it ? ("fixtures are automatically loaded between each test !" $client->disableReboot()
+Description : null is ok, empty string is not
 
 ## Room
 
