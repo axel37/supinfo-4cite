@@ -114,4 +114,31 @@ class RoomTest extends ApiTestCase
         ]);
     }
 
+    public function testPutIsDisabled()
+    {
+        $response = static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'hotelId' => $this->hotelId,
+                'name' => 'Room 237',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $roomId = $data['@id'];
+
+        // Change the name of the newly created room through a PUT request
+        static::createClient()->request('PUT', $roomId, [
+                'json' => [
+                    'name' => 'Updated Room Name',
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/ld+json',
+                ],
+            ]);
+            self::assertResponseStatusCodeSame(405);
+    }
+
 }

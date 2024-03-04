@@ -93,8 +93,9 @@ Description : null is ok, empty string is not
 
 ~~Create room (POST)~~
 ~~GET room~~
-PUT room
+~~PUT is disabled~~
 PATCH room
 DELETE room
 View bookings !
 Book
+Put room with unknown room id

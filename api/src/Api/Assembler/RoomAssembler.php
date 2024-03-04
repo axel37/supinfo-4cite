@@ -30,4 +30,9 @@ class RoomAssembler
         $dto->initializeId($room->getId());
         return $dto;
     }
+
+    public function updateRoomFromDto(Room $room, RoomDto $dto): void
+    {
+        $room->setName($dto->getName());
+    }
 }
