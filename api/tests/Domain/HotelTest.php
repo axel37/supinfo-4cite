@@ -143,4 +143,14 @@ class HotelTest extends TestCase
         $hotel = new Hotel('Grand Hotel', 'Pine Street');
         $this->assertCount(0, $hotel->getRooms());
     }
+
+    public function testCanCreateRoom()
+    {
+        $hotel = new Hotel('Parkside hotel', 'Oak Street');
+        $room = $hotel->createRoom('Room 007');
+
+        $this->assertEquals($hotel, $room->getHotel());
+        $this->assertCount(1, $hotel->getRooms());
+        $this->assertContains($room, $hotel->getRooms());
+    }
 }

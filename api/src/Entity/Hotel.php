@@ -132,4 +132,11 @@ class Hotel
     {
         return $this->id;
     }
+
+    public function createRoom(string $name): Room
+    {
+        $newRoom = new Room($this, $name);
+        $this->addRoom($newRoom);
+        return $newRoom;
+    }
 }
