@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain;
 
+use App\Entity\Hotel;
 use App\Entity\Room;
 use App\Entity\User;
 use App\Exception\EmptyEmailException;
@@ -66,7 +67,7 @@ class UserTest extends TestCase
 
     public function testCanBookRoom(): void
     {
-        $room = new Room('Room 237');
+        $room = new Room(new Hotel('Grand hotel', 'Pine street'), 'Room 237');
 
         $this->user->book($room, new DatePoint('today'), new DatePoint('tomorrow'));
         $this->assertCount(1, $this->user->getBookings());

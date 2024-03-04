@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use ApiPlatform\Elasticsearch\Tests\Fixtures\Book;
+use App\Entity\Hotel;
 use App\Entity\Room;
 use App\Repository\BookingRepository;
 use App\Repository\RoomRepository;
@@ -10,17 +10,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Clock\DatePoint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use function PHPUnit\Framework\assertEquals;
+use Symfony\Component\Uid\Uuid;
 
 class RoomTest extends KernelTestCase
 {
     private ContainerInterface $container;
     private EntityManagerInterface $em;
     private RoomRepository $roomRepository;
-    private $room;
-    private $roomId;
+    private Room $room;
+    private Uuid $roomId;
     private BookingRepository $bookingRepository;
+    private Hotel $hotel;
 
     protected function setUp(): void
     {
@@ -32,7 +32,8 @@ class RoomTest extends KernelTestCase
         $this->roomRepository = $this->container->get(RoomRepository::class);
         $this->bookingRepository = $this->container->get(BookingRepository::class);
 
-        $this->room = new Room('Room 237');
+        $this->hotel = new Hotel('Grand hotel', 'Pine street');
+        $this->room = new Room($this->hotel,'Room 237');
         $this->roomId = $this->room->getId();
         $this->em->persist($this->room);
         $this->em->flush();
@@ -65,7 +66,7 @@ class RoomTest extends KernelTestCase
 
     public function testDeleteRoomCascadesBookings()
     {
-        $roomToDelete = new Room('Room to be deleted');
+        $roomToDelete = new Room($this->hotel,'Room to be deleted');
         $roomId = $roomToDelete->getId();
         $roomToDelete->book(new DatePoint('today'), new DatePoint('tomorrow'));
         $bookingId = $roomToDelete->getBookings()[0]->getId();

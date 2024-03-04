@@ -52,9 +52,9 @@ class HotelTest extends KernelTestCase
 
     public function testCanAddAndRemoveRooms(): void
     {
-        $room = new Room('Room 237');
-        $roomId = $room->getId();
         $hotel = $this->hotelRepository->find($this->hotelId);
+        $room = new Room($hotel,'Room 237');
+        $roomId = $room->getId();
         $hotel->addRoom($room);
         $this->em->flush();
 
@@ -73,7 +73,7 @@ class HotelTest extends KernelTestCase
     public function testDeleteHotelCascadesRooms()
     {
         $hotelToDelete = new Hotel('Hotel to be deleted', 'Pine Street');
-        $hotelRoomToDelete = new Room('Room to be deleted');
+        $hotelRoomToDelete = new Room($hotelToDelete, 'Room to be deleted');
         $hotelToDelete->addRoom($hotelRoomToDelete);
 
         $hotelId = $hotelToDelete->getId();
