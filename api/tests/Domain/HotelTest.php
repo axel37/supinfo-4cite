@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain;
 
 use App\Entity\Hotel;
 use App\Entity\Picture;
@@ -10,8 +10,6 @@ use App\Exception\EmptyNameException;
 use App\Exception\RoomAlreadyInHotelException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
-
-use function PHPUnit\Framework\assertCount;
 
 class HotelTest extends TestCase
 {
@@ -136,5 +134,11 @@ class HotelTest extends TestCase
     {
         $this->expectException(RoomAlreadyInHotelException::class);
         $this->hotel->addRoom($this->roomA);
+    }
+
+    public function testCanCreateHotelWithoutRooms(): void
+    {
+        $hotel = new Hotel('Grand Hotel', 'Pine Street');
+        $this->assertCount(0, $hotel->getRooms());
     }
 }

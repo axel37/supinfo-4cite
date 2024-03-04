@@ -1,4 +1,4 @@
-# Tests
+# Unit Tests
 
 ## Booking
 
@@ -12,6 +12,7 @@ Can get start
 Can get end
 No aliasing (= defensive copies)
 Cancel ?
+Can read room
 
 ## Room
 
@@ -23,7 +24,7 @@ Invalid name~~
 ~~Update~~
 ~~update invalid name~~
 
-# Hotel
+## Hotel
 
 ~~See hotel's rooms~~
 ~~See hotel's bookings~~
@@ -39,13 +40,14 @@ Hotel with no description is ok~~
 update invalid name
 update invalid location~~
 ~~room already in hotel~~
+~~Create hotel without rooms~~
 
-# Picture
+## Picture
 
 ~~Empty path~~
 ~~Can read path~~
 
-# User
+## User
 
 ~~make a booking~~
 ~~Find all user's bookings~~
@@ -57,3 +59,28 @@ invalid email format ? (handled by validator ?)
 ~~Update user
 update invalid email
 update invalid name~~
+
+# Entity/Doctrine Testing
+
+## Hotel
+~~Create hotel~~
+~~Add / get / remove rooms~~
+~~Room cascade on deletion~~
+
+## Room
+
+~~Can create a room, and retrieve it from db~~
+~~Can get bookings~~
+~~Test cascade operations~~
+
+# API Tests
+
+## Hotel
+
+~~Create hotel
+Can create hotel without rooms~~
+~~Invalid name~~
+~~Invalid location~~
+Add room (HOW?? NO ROOM ENDPOINT)
+Remove room
+Can get hotel after creating it ? ("fixtures are automatically loaded between each test !" $client->disableReboot()

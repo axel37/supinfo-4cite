@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Domain;
 
 use App\Entity\Room;
+use App\Entity\User;
 use App\Exception\EmptyEmailException;
 use App\Exception\EmptyNameException;
 use PHPUnit\Framework\TestCase;
-use App\Entity\User;
 use Symfony\Component\Clock\DatePoint;
 
 class UserTest extends TestCase
