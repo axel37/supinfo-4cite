@@ -65,12 +65,13 @@ update invalid name~~
 ## Hotel
 ~~Create hotel~~
 ~~Add / get / remove rooms~~
+~~Room cascade on deletion~~
 
 ## Room
 
 ~~Can create a room, and retrieve it from db~~
-Can get bookings
-Test cascade operations
+~~Can get bookings~~
+~~Test cascade operations~~
 
 # API Tests
 
