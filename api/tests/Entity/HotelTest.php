@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\Hotel;
 use App\Entity\Room;
 use App\Repository\HotelRepository;
+use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,6 +17,7 @@ class HotelTest extends KernelTestCase
     private EntityManagerInterface $em;
     private HotelRepository $hotelRepository;
     private Uuid $hotelId;
+    private RoomRepository $roomRepository;
 
     protected function setUp(): void
     {
@@ -25,6 +27,7 @@ class HotelTest extends KernelTestCase
         $this->container = static::getContainer();
         $this->em = $this->container->get('doctrine')->getManager();
         $this->hotelRepository = $this->container->get(HotelRepository::class);
+        $this->roomRepository = $this->container->get(RoomRepository::class);
 
         $hotel = new Hotel('Grand Hotel', 'Pine Street');
         $this->hotelId = $hotel->getId();
@@ -47,7 +50,7 @@ class HotelTest extends KernelTestCase
         $this->assertEquals('Pine Street', $hotel->getLocation());
     }
 
-    public function testCanAddRooms(): void
+    public function testCanAddAndRemoveRooms(): void
     {
         $room = new Room('Room 237');
         $roomId = $room->getId();
@@ -58,6 +61,13 @@ class HotelTest extends KernelTestCase
         $hotel = $this->hotelRepository->find($this->hotelId);
         $this->assertCount(1, $hotel->getRooms());
         $this->assertEquals($roomId, $hotel->getRooms()[0]->getId());
+
+        $room = $this->roomRepository->find($roomId);
+        $hotel->removeRoom($room);
+        $this->em->flush();
+
+        $hotel = $this->hotelRepository->find($this->hotelId);
+        $this->assertCount(0, $hotel->getRooms());
     }
 
 }

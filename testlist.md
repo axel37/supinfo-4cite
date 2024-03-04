@@ -64,7 +64,7 @@ update invalid name~~
 
 ## Hotel
 ~~Create hotel~~
-Add / get rooms
+~~Add / get / remove rooms~~
 
 ## Room
 
