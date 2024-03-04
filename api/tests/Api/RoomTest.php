@@ -93,7 +93,7 @@ class RoomTest extends ApiTestCase
         $data = json_decode($response->getContent(), true);
         $roomId = $data['@id'];
 
-        // Request the newly created room
+        // Check that there is now 1 room
         static::createClient()->request('GET', '/rooms');
         self::assertResponseIsSuccessful();
         $this->assertJsonContains([
@@ -101,6 +101,16 @@ class RoomTest extends ApiTestCase
             '@id' => '/rooms',
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 1,
+        ]);
+
+        // Request the newly created room
+        static::createClient()->request('GET', $roomId);
+        self::assertResponseIsSuccessful();
+        self::assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@type' => 'Room',
+            '@id' => $roomId,
+            'name' => 'Room 237',
         ]);
     }
 
