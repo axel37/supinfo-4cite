@@ -10,8 +10,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Exception\DtoIdAlreadySetException;
-use App\State\RoomStateProcessor;
-use App\State\RoomStateProvider;
+use App\State\Room\RoomPatchProcessor;
+use App\State\Room\RoomPostProcessor;
+use App\State\Room\RoomStateProvider;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,12 +21,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(),
-        new Patch(),
+        new Post(processor: RoomPostProcessor::class),
+        new Patch(processor: RoomPatchProcessor::class),
         new Delete()
     ],
     provider: RoomStateProvider::class,
-    processor: RoomStateProcessor::class
 )]
 class RoomDto
 {

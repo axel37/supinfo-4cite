@@ -1,6 +1,6 @@
 <?php
 
-namespace App\State;
+namespace App\State\Room;
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\State\Pagination\TraversablePaginator;
 use ApiPlatform\State\ProviderInterface;
 use App\Api\Assembler\RoomAssembler;
@@ -27,13 +28,14 @@ class RoomStateProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         return match (true) {
-            $operation instanceof Get => $this->getOne($operation, $uriVariables, $context),
+            $operation instanceof Get,
+                $operation instanceof Patch => $this->getOne($operation, $uriVariables, $context),
             $operation instanceof GetCollection => $this->getCollection($operation, $uriVariables, $context),
             default => throw new OperationNotImplementedException()
         };
     }
 
-    public function getOne(Get $operation, array $uriVariables, array $context): RoomDto
+    public function getOne(Operation $operation, array $uriVariables, array $context): RoomDto
     {
         $room = $this->itemProvider->provide(
             $operation->withStateOptions(new Options(Room::class)),

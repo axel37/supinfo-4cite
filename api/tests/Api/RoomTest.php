@@ -131,14 +131,57 @@ class RoomTest extends ApiTestCase
 
         // Change the name of the newly created room through a PUT request
         static::createClient()->request('PUT', $roomId, [
-                'json' => [
-                    'name' => 'Updated Room Name',
-                ],
-                'headers' => [
-                    'Content-Type' => 'application/ld+json',
-                ],
-            ]);
-            self::assertResponseStatusCodeSame(405);
+            'json' => [
+                'name' => 'Updated Room Name',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(405);
+    }
+
+    public function testPatchRoom(): void
+    {
+        $response = static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'hotelId' => $this->hotelId,
+                'name' => 'Room 237',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $roomId = $data['@id'];
+
+        // Change the name of the newly created room through a PUT request
+        static::createClient()->request('PATCH', $roomId, [
+            'json' => [
+                'name' => 'Updated Room Name',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/merge-patch+json',
+            ],
+        ]);
+        self::assertResponseIsSuccessful();
+        // Check response contains new name
+        self::assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@type' => 'Room',
+            '@id' => $roomId,
+            'name' => 'Updated Room Name',
+        ]);
+
+        static::createClient()->request('GET', $roomId);
+        self::assertResponseIsSuccessful();
+        self::assertJsonContains([
+            '@context' => '/contexts/Room',
+            '@type' => 'Room',
+            '@id' => $roomId,
+            'name' => 'Updated Room Name',
+        ]);
     }
 
 }
