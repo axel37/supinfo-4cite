@@ -49,7 +49,7 @@ class RoomDto
         return $this->hotelId;
     }
 
-    public function setInitialId(Uuid $id): void
+    public function initializeId(Uuid $id): void
     {
         if (isset($this->id)) {
             throw new DtoIdAlreadySetException();

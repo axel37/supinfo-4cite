@@ -27,7 +27,7 @@ class RoomAssembler
     {
         $hotelId = $room->getHotel()->getId();
         $dto = new RoomDto($hotelId, $room->getName());
-        $dto->setInitialId($room->getId());
+        $dto->initializeId($room->getId());
         return $dto;
     }
 }

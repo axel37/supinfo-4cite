@@ -91,9 +91,10 @@ Description : null is ok, empty string is not
 
 ## Room
 
-~~Create room (POST)
-GET rooms~~
-GET room
+~~Create room (POST)~~
+~~GET room~~
 PUT room
 PATCH room
 DELETE room
+View bookings !
+Book
