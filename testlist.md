@@ -23,6 +23,7 @@ Test for aliasing bugs (= defensive copies of dates)
 Invalid name~~
 ~~Update~~
 ~~update invalid name~~
+book(): BookingInterface
 
 ## Hotel
 
@@ -41,7 +42,7 @@ update invalid name
 update invalid location~~
 ~~room already in hotel~~
 ~~Create hotel without rooms~~
-createRoom(): Room (create a room and link hotel)
+createRoom(): Room
 
 ## Picture
 
