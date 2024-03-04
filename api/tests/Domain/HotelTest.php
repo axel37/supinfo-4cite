@@ -25,11 +25,13 @@ class HotelTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->roomA = new Room('Room A');
-        $this->roomB = new Room('Room B');
-        $this->roomC = new Room('Room C');
-        $this->rooms = [$this->roomA, $this->roomB, $this->roomC];
-        $this->hotel = new Hotel('Grand Hotel', 'Pine Street', $this->rooms);
+        $this->hotel = new Hotel('Grand Hotel', 'Pine Street');
+        $this->roomA = new Room($this->hotel,'Room A');
+        $this->roomB = new Room($this->hotel,'Room B');
+        $this->roomC = new Room($this->hotel,'Room C');
+        $this->hotel->addRoom($this->roomA);
+        $this->hotel->addRoom($this->roomB);
+        $this->hotel->addRoom($this->roomC);
     }
 
     protected function tearDown(): void
@@ -112,7 +114,7 @@ class HotelTest extends TestCase
         $this->assertCount(2, $this->hotel->getRooms());
         $this->assertNotContains($this->roomA, $this->hotel->getRooms());
 
-        $newRoom = new Room('Room 000');
+        $newRoom = new Room($this->hotel,'Room 000');
         $this->hotel->addRoom($newRoom);
         $this->assertCount(3, $this->hotel->getRooms());
         $this->assertContains($newRoom, $this->hotel->getRooms());

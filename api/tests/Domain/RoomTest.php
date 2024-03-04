@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain;
 
+use App\Entity\Hotel;
 use App\Entity\Room;
 use App\Exception\EmptyNameException;
 use App\Exception\RoomUnavailableForBookingException;
@@ -20,10 +21,13 @@ class RoomTest extends TestCase
 
     private Room $room;
 
+    private Hotel $hotel;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->room = new Room('Room 237');
+        $this->hotel = new Hotel('Grand hotel', 'Pine street');
+        $this->room = new Room($this->hotel, 'Room 237');
     }
 
     protected function tearDown(): void
@@ -34,14 +38,14 @@ class RoomTest extends TestCase
 
     public function testCanReadName(): void
     {
-        $room = new Room('Room 237');
+        $room = new Room($this->hotel,'Room 237');
         $this->assertEquals('Room 237', $room->getName());
     }
 
     public function testFailOnInvalidName(): void
     {
         $this->expectException(EmptyNameException::class);
-        $room = new Room(' ');
+        $room = new Room($this->hotel,' ');
     }
 
     public function testCanUpdateName(): void

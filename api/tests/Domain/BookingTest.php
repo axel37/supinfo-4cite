@@ -3,6 +3,7 @@
 namespace App\Tests\Domain;
 
 use App\Entity\Booking;
+use App\Entity\Hotel;
 use App\Entity\Room;
 use App\Exception\BookingEndsBeforeStartingException;
 use App\Exception\BookingInThePastException;
@@ -18,7 +19,7 @@ class BookingTest extends TestCase
     {
         parent::setUp();
 
-        $this->room = new Room('Room 237');
+        $this->room = new Room(new Hotel('Grand hotel', 'Pine street'), 'Room 237');
     }
 
     public function testCanReadDatesAfterCreation(): void

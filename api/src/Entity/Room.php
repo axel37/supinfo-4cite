@@ -15,29 +15,32 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
-use Symfony\Component\Clock\DatePoint;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
-use Doctrine\DBAL\Types\Types;
 
 #[Entity(repositoryClass: RoomRepository::class)]
 class Room implements BookableInterface
 {
-    #[Column(type: Types::GUID)]
+    #[Column(type: UuidType::NAME)]
     #[Id]
     private Uuid $id;
 
     #[OneToMany(mappedBy: 'room', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
-    /** @var Collection<Booking> */
+    /** @var Collection<Booking> $bookings */
     private Collection $bookings;
     #[Column]
     private string $name;
 
+    #[ManyToOne(targetEntity: Hotel::class, inversedBy: 'rooms')]
     private Hotel $hotel;
-    public function __construct(string $name)
+
+    public function __construct(Hotel $hotel, string $name)
     {
         $this->id = Uuid::v4();
         $this->setName($name);
+        $this->hotel = $hotel;
         $this->bookings = new ArrayCollection();
     }
 
@@ -90,5 +93,10 @@ class Room implements BookableInterface
     public function getId(): Uuid
     {
         return $this->id;
+    }
+
+    public function getHotel()
+    {
+        return $this->hotel;
     }
 }

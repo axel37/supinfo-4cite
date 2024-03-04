@@ -41,6 +41,7 @@ update invalid name
 update invalid location~~
 ~~room already in hotel~~
 ~~Create hotel without rooms~~
+createRoom(): Room (create a room and link hotel)
 
 ## Picture
 
