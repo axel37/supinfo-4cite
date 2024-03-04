@@ -1,6 +1,11 @@
 api_platform:
     title: Hotel API
     version: 0.1.0
+    mapping:
+        paths:
+            # The default configuration only looks in /Entity
+            - '%kernel.project_dir%/src/Entity'
+            - '%kernel.project_dir%/src/Api'
     # Mercure integration, remove if unwanted
     mercure: ~
     formats:

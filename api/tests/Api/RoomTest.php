@@ -25,4 +25,17 @@ class RoomTest extends ApiTestCase
         ]);
     }
 
+    public function testFailsOnInvalidName(): void
+    {
+        static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'name' => '',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(422);
+    }
+
 }

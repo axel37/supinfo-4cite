@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Api;
 
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Validator\Constraints\NotBlank;
