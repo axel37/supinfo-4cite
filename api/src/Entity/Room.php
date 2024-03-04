@@ -32,6 +32,8 @@ class Room implements BookableInterface
     private Collection $bookings;
     #[Column]
     private string $name;
+
+    private Hotel $hotel;
     public function __construct(string $name)
     {
         $this->id = Uuid::v4();

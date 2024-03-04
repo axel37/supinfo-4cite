@@ -8,19 +8,47 @@ use App\Exception\EmptyNameException;
 use App\Exception\RoomAlreadyInHotelException;
 use App\Hotel\BookableInterface;
 use App\Hotel\BookingInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Uid\Uuid;
 
+#[Entity]
 class Hotel
 {
+    #[Id]
+    #[Column(type: Types::GUID)]
+    private Uuid $id;
     /** @var Picture[] $pictures */
     private array $pictures = [];
+    #[Column]
+    private string $name;
+    #[Column]
+    private string $location;
+    #[OneToMany(mappedBy: 'hotel', targetEntity: Room::class, cascade: ['persist'])]
+    private Collection $rooms;
+    #[Column(nullable: true)]
+    private ?string $description;
 
     /**
      * @param Room[] $rooms
      */
-    public function __construct(private string $name, private string $location, /** @var iterable<BookableInterface> $rooms */ private iterable $rooms = [], private ?string $description = null)
-    {
+    public function __construct(
+        string $name,
+        string $location,
+        /** @var iterable<BookableInterface> $rooms */
+        array|Collection $rooms = [],
+        ?string $description = null
+    ) {
+        $this->id = Uuid::v4();
         $this->setName($name);
         $this->setLocation($location);
+        $this->rooms = new ArrayCollection($rooms);
+        $this->description = $description;
     }
 
     public function getName(): string
@@ -33,7 +61,7 @@ class Hotel
         return $this->location;
     }
 
-    public function getRooms(): iterable
+    public function getRooms(): Collection
     {
         return $this->rooms;
     }
@@ -88,14 +116,21 @@ class Hotel
 
     public function removeRoom(Room $room): void
     {
-        $this->rooms = array_udiff($this->rooms, [$room], static fn(Room $a, Room $b) => $a <=> $b);
+        $this->rooms = new ArrayCollection(
+            array_udiff($this->rooms->toArray(), [$room], static fn(Room $a, Room $b) => $a <=> $b)
+        );
     }
 
     public function addRoom(Room $room): void
     {
-        if (in_array($room, $this->rooms)) {
+        if ($this->rooms->contains($room)) {
             throw new RoomAlreadyInHotelException();
         }
         $this->rooms[] = $room;
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
     }
 }

@@ -62,10 +62,15 @@ update invalid name~~
 
 # Entity/Doctrine Testing
 
+## Hotel
+~~Create hotel~~
+Add / get rooms
+
 ## Room
 
 ~~Can create a room, and retrieve it from db~~
 Can get bookings
+Test cascade operations
 
 # API Tests
 
