@@ -99,3 +99,15 @@ Description : null is ok, empty string is not
 View bookings !
 Book
 Put room with unknown room id
+Invalid booking dates
+
+
+## Booking
+~~Create (POST)~~
+Create on unavailable slot
+Create with invalid dates
+GET booking
+GET bookings
+PUT is disabled
+PATCH is disabled
+DELETE booking
