@@ -106,8 +106,8 @@ Invalid booking dates
 ~~Create (POST)~~
 Create on unavailable slot
 Create with invalid dates
-GET booking
-GET bookings
-PUT is disabled
+~~GET booking
+GET bookings~~
+~~PUT is disabled~~
 PATCH is disabled
 DELETE booking

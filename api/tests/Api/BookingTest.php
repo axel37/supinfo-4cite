@@ -68,4 +68,36 @@ class BookingTest extends ApiTestCase
         ]);
     }
 
+    public function testPutIsDisabled()
+    {
+        $start = new DatePoint('today');
+        $end = new DatePoint('tomorrow');
+        $response = static::createClient()->request('POST', '/bookings', [
+            'json' => [
+                'roomId' => $this->roomId,
+                'startDate' => $start->format('Y-m-d'),
+                'endDate' => $end->format('Y-m-d')
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $bookingId = $data['@id'];
+
+        // Change the name of the newly created room through a PUT request
+        $newStart = new DatePoint('today + 5 hours');
+        static::createClient()->request('PUT', $bookingId, [
+            'json' => [
+                'startDate' => $newStart->format('Y-m-d'),
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(405);
+    }
+
+
 }
