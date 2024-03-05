@@ -84,5 +84,18 @@ Can create hotel without rooms~~
 ~~Invalid name~~
 ~~Invalid location~~
 Add room (HOW?? NO ROOM ENDPOINT)
+Create room (Hotel::createRoom)
 Remove room
 Can get hotel after creating it ? ("fixtures are automatically loaded between each test !" $client->disableReboot()
+Description : null is ok, empty string is not
+
+## Room
+
+~~Create room (POST)~~
+~~GET room~~
+~~PUT is disabled~~
+~~PATCH room~~
+~~DELETE room~~
+View bookings !
+Book
+Put room with unknown room id
