@@ -130,6 +130,31 @@ class BookingTest extends ApiTestCase
         self::assertResponseStatusCodeSame(405);
     }
 
-
+    public function testBookUnavailable(): void
+    {
+        $start = new DatePoint('today');
+        $end = new DatePoint('tomorrow');
+        static::createClient()->request('POST', '/bookings', [
+            'json' => [
+                'roomId' => $this->roomId,
+                'startDate' => $start->format('Y-m-d'),
+                'endDate' => $end->format('Y-m-d')
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        static::createClient()->request('POST', '/bookings', [
+            'json' => [
+                'roomId' => $this->roomId,
+                'startDate' => $start->format('Y-m-d'),
+                'endDate' => $end->format('Y-m-d')
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseStatusCodeSame(409);
+    }
 
 }

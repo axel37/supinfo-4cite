@@ -104,7 +104,7 @@ Invalid booking dates
 
 ## Booking
 ~~Create (POST)~~
-Create on unavailable slot
+~~Create on unavailable slot~~
 Create with invalid dates
 ~~GET booking
 GET bookings~~
