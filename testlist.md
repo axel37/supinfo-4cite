@@ -96,8 +96,8 @@ Description : null is ok, empty string is not
 ~~PUT is disabled~~
 ~~PATCH room~~
 ~~DELETE room~~
-View bookings !
-Book
+View bookings
+book
 Put room with unknown room id
 Invalid booking dates
 
