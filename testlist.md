@@ -110,4 +110,4 @@ Create with invalid dates
 GET bookings~~
 ~~PUT is disabled~~
 ~~PATCH is disabled~~
-DELETE booking
+~~DELETE booking~~

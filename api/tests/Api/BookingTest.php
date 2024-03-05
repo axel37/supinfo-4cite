@@ -157,4 +157,36 @@ class BookingTest extends ApiTestCase
         self::assertResponseStatusCodeSame(409);
     }
 
+    public function testDeleteBooking(): void
+    {
+        $start = new DatePoint('today');
+        $end = new DatePoint('tomorrow');
+        $response = static::createClient()->request('POST', '/bookings', [
+            'json' => [
+                'roomId' => $this->roomId,
+                'startDate' => $start->format('Y-m-d'),
+                'endDate' => $end->format('Y-m-d')
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        $data = json_decode($response->getContent(), true);
+        $bookingId = $data['@id'];
+
+        $respones = static::createClient()->request('DELETE', $bookingId);
+        self::assertResponseStatusCodeSame(204);
+
+        // Check that there is now 1 booking
+        static::createClient()->request('GET', '/bookings');
+        self::assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/contexts/Booking',
+            '@id' => '/bookings',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 0,
+        ]);
+    }
+
+
 }
