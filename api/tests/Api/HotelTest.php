@@ -72,14 +72,26 @@ class HotelTest extends ApiTestCase
         $data = json_decode($response->getContent(), true);
         $hotelUri = $data['@id'];
 
-        // Check that there is now 1 room
-        $response = static::createClient()->request('GET', '/hotels');
+        // Check that there is now 1 hotel
+        static::createClient()->request('GET', '/hotels');
         self::assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@context' => '/contexts/Hotel',
             '@id' => '/hotels',
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 1,
+        ]);
+
+        // Check that we can get the new hotel and it has all the info we expect
+        static::createClient()->request('GET', $hotelUri);
+        self::assertResponseIsSuccessful();
+        self::assertJsonContains([
+            '@context' => '/contexts/Hotel',
+            '@id' => $hotelUri,
+            '@type' => 'Hotel',
+            'name' => 'Grand Hotel',
+            'location' => 'Pine Street',
+            'rooms' => [],
         ]);
     }
 
