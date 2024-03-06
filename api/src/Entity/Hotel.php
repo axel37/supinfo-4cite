@@ -139,4 +139,9 @@ class Hotel
         $this->addRoom($newRoom);
         return $newRoom;
     }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
 }

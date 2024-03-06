@@ -3,18 +3,43 @@
 namespace App\Api;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Entity\Room;
+use App\Exception\DtoIdAlreadySetException;
+use App\State\Hotel\HotelStateProcessor;
+use App\State\Hotel\HotelStateProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-#[ApiResource(shortName: 'Hotel')]
+#[ApiResource(
+    shortName: 'Hotel',
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Patch(),
+        new Delete()
+    ],
+//    normalizationContext: ['groups' => ['read']],
+//    denormalizationContext: ['groups' => ['create', 'update']],
+    provider: HotelStateProvider::class,
+    processor: HotelStateProcessor::class,
+)]
 class HotelDto
 {
+    private Uuid $id;
     #[NotBlank]
     private string $name;
     #[NotBlank]
     private string $location;
-    /** @var Room[] */
-    private array $rooms;
+    /** @var Collection<Room> */
+    private Collection $rooms;
     #[NotBlank(allowNull: true)]
     private ?string $description;
 
@@ -24,11 +49,11 @@ class HotelDto
      * @param iterable $rooms
      * @param string $description
      */
-    public function __construct(string $name, string $location, array $rooms = [], ?string $description = null)
+    public function __construct(string $name, string $location, ?Collection $rooms = null, ?string $description = null)
     {
         $this->name = $name;
         $this->location = $location;
-        $this->rooms = $rooms;
+        $this->rooms = $rooms ?? new ArrayCollection();
         $this->description = $description;
     }
 
@@ -52,7 +77,7 @@ class HotelDto
         $this->location = $location;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -62,9 +87,22 @@ class HotelDto
         $this->description = $description;
     }
 
-    public function getRooms(): array
+    public function getRooms(): Collection
     {
         return $this->rooms;
+    }
+
+    public function initializeId(Uuid $id): void
+    {
+        if (isset($this->id)) {
+            throw new DtoIdAlreadySetException();
+        }
+        $this->id = $id;
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
     }
 
 
