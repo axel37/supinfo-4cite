@@ -1,6 +1,3 @@
-auth:
-    path: /auth
-    methods: ['POST']
 controllers:
     resource:
         path: ../src/Controller/

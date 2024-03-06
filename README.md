@@ -15,5 +15,3 @@
 `docker compose exec php bin/console -e test ...` : Execute commands for the test environment (create db, migrate...)
 
 `XDEBUG_MODE=debug docker compose up --wait` : Enable XDebug
-
-`docker exec php bin/console lexik:jwt:generate-keypair ` : Generate keys for JWT authentication
