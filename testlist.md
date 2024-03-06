@@ -111,3 +111,6 @@ GET bookings~~
 ~~PUT is disabled~~
 ~~PATCH is disabled~~
 ~~DELETE booking~~
+
+# User
+Can log in
