@@ -8,12 +8,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Entity\Room;
 use App\Exception\DtoIdAlreadySetException;
 use App\State\Hotel\HotelStateProcessor;
 use App\State\Hotel\HotelStateProvider;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -26,21 +24,27 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         new Patch(),
         new Delete()
     ],
-//    normalizationContext: ['groups' => ['read']],
-//    denormalizationContext: ['groups' => ['create', 'update']],
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['create', 'update']],
     provider: HotelStateProvider::class,
     processor: HotelStateProcessor::class,
 )]
 class HotelDto
 {
+    #[Groups(['read'])]
     private Uuid $id;
     #[NotBlank]
+    #[Groups(['read', 'create', 'update'])]
     private string $name;
     #[NotBlank]
+    #[Groups(['read', 'create', 'update'])]
     private string $location;
-    /** @var Collection<Room> */
-    private Collection $rooms;
+
+    #[Groups(['read'])]
+    /** @var string[] $roomIds */
+    private array $roomIds;
     #[NotBlank(allowNull: true)]
+    #[Groups(['read', 'create', 'update'])]
     private ?string $description;
 
     /**
@@ -49,11 +53,11 @@ class HotelDto
      * @param iterable $rooms
      * @param string $description
      */
-    public function __construct(string $name, string $location, ?Collection $rooms = null, ?string $description = null)
+    public function __construct(string $name, string $location, array $roomIds = [], ?string $description = null)
     {
         $this->name = $name;
         $this->location = $location;
-        $this->rooms = $rooms ?? new ArrayCollection();
+        $this->roomIds = $roomIds;
         $this->description = $description;
     }
 
@@ -87,9 +91,9 @@ class HotelDto
         $this->description = $description;
     }
 
-    public function getRooms(): Collection
+    public function getRoomIds(): array
     {
-        return $this->rooms;
+        return $this->roomIds;
     }
 
     public function initializeId(Uuid $id): void

@@ -24,7 +24,7 @@ class HotelTest extends ApiTestCase
             '@type' => 'Hotel',
             'name' => 'Grand Hotel',
             'location' => 'Pine Street',
-            'rooms' => [],
+            'roomIds' => []
         ]);
     }
 
@@ -91,7 +91,53 @@ class HotelTest extends ApiTestCase
             '@type' => 'Hotel',
             'name' => 'Grand Hotel',
             'location' => 'Pine Street',
-            'rooms' => [],
+            'roomIds' => []
+        ]);
+    }
+
+    public function testCreateRoomThenReadHotel(): void
+    {
+        $response = static::createClient()->request('POST', '/hotels', [
+            'json' => [
+                'name' => 'Hotel which will have a room',
+                'location' => 'No rooms street',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseIsSuccessful();
+
+        // Get id of newly created room from response
+        $data = json_decode($response->getContent(), true);
+        $hotelUri = $data['@id'];
+        $hotelId = $data['id'];
+
+        $response = static::createClient()->request('POST', '/rooms', [
+            'json' => [
+                'hotelId' => $hotelId,
+                'name' => 'Newly added room',
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseIsSuccessful();
+        $data = json_decode($response->getContent(), true);
+        $roomId = $data['id'];
+
+
+        // GET hotel and check that it has one room
+        static::createClient()->request('GET', $hotelUri);
+        self::assertJsonContains([
+            '@context' => '/contexts/Hotel',
+            '@id' => $hotelUri,
+            '@type' => 'Hotel',
+            'name' => 'Hotel which will have a room',
+            'location' => 'No rooms street',
+            'roomIds' => [
+                0 => $roomId
+            ],
         ]);
     }
 

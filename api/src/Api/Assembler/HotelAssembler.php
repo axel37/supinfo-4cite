@@ -15,7 +15,12 @@ class HotelAssembler
 
     public function createDtoFromHotel(Hotel $hotel): HotelDto
     {
-        $dto = new HotelDto($hotel->getName(), $hotel->getLocation(), $hotel->getRooms(), $hotel->getDescription());
+        $roomIds = [];
+        foreach ($hotel->getRooms() as $room) {
+            $roomIds[] = $room->getId();
+        }
+
+        $dto = new HotelDto($hotel->getName(), $hotel->getLocation(), $roomIds, $hotel->getDescription());
         $dto->initializeId($hotel->getId());
         return $dto;
     }
