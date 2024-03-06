@@ -224,4 +224,45 @@ class RoomTest extends ApiTestCase
             'hydra:totalItems' => 0,
         ]);
     }
+
+
+//    public function testCreateAndReadBooking(): void
+//    {
+//        $client = static::createClient();
+//        $client->disableReboot();
+//        $response = $client->request('POST', '/rooms', [
+//            'json' => [
+//                'hotelId' => $this->hotelId,
+//                'name' => 'Room 237',
+//            ],
+//            'headers' => [
+//                'Content-Type' => 'application/ld+json',
+//            ],
+//        ]);
+//        $data = json_decode($response->getContent(), true);
+////        $roomId = $data['@id'];
+//        $roomId = $data['id'];
+//
+//        $start = new DatePoint('today');
+//        $end = new DatePoint('tomorrow');
+//        $response = $client->request('POST', '/bookings', [
+//            'json' => [
+//                'roomId' => $roomId,
+//                'startDate' => $start->format('Y-m-d'),
+//                'endDate' => $end->format('Y-m-d')
+//            ],
+//            'headers' => [
+//                'Content-Type' => 'application/ld+json',
+//            ],
+//        ]);
+//        self::assertResponseIsSuccessful();
+//
+//        $response = $client->request('GET', '/rooms/' . $roomId);
+//        self::assertResponseIsSuccessful();
+//        // Get bookings array from response and count elements
+//        $data = json_decode($response->getContent(), true);
+//        $bookings = $data['bookings'];
+//        var_dump($response->getContent());
+//        $this->assertCount(1, $bookings);
+//    }
 }

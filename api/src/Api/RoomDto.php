@@ -9,10 +9,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Entity\Booking;
 use App\Exception\DtoIdAlreadySetException;
-use App\State\Room\RoomPostProcessor;
 use App\State\Room\RoomStateProcessor;
 use App\State\Room\RoomStateProvider;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,25 +26,35 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(),
         new Delete()
     ],
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['create', 'update']],
     provider: RoomStateProvider::class,
-    processor: RoomStateProcessor::class
+    processor: RoomStateProcessor::class,
 )]
 class RoomDto
 {
     #[Assert\NotBlank]
+    #[Groups(['read', 'create', 'update'])]
     private string $name;
 
     #[ApiProperty(identifier: true)]
+    #[Groups(['read'])]
     private Uuid $id;
 
     #[Assert\Uuid]
     #[Assert\NotBlank]
+    #[Groups(['read', 'create'])]
     private string $hotelId;
 
-    public function __construct(string $hotelId, string $name)
+    /** @var Booking[] $bookings */
+    #[Groups(['read'])]
+    private array $bookings;
+
+    public function __construct(string $hotelId, string $name, array $bookings =  [])
     {
         $this->hotelId = $hotelId;
         $this->name = $name;
+        $this->bookings = $bookings;
     }
 
     public function getName(): string
@@ -72,5 +83,10 @@ class RoomDto
             throw new DtoIdAlreadySetException();
         }
         $this->id = $id;
+    }
+
+    public function getBookings(): array
+    {
+        return $this->bookings;
     }
 }

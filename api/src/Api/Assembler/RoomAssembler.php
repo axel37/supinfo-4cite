@@ -26,7 +26,7 @@ class RoomAssembler
     public function createDtoFromRoom(Room $room): RoomDto
     {
         $hotelId = $room->getHotel()->getId();
-        $dto = new RoomDto($hotelId, $room->getName());
+        $dto = new RoomDto($hotelId, $room->getName(), $room->getBookings()->toArray());
         $dto->initializeId($room->getId());
         return $dto;
     }

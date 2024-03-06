@@ -83,10 +83,10 @@ update invalid name~~
 Can create hotel without rooms~~
 ~~Invalid name~~
 ~~Invalid location~~
-Add room (HOW?? NO ROOM ENDPOINT)
+~~Add room~~
 Create room (Hotel::createRoom)
 Remove room
-Can get hotel after creating it ? ("fixtures are automatically loaded between each test !" $client->disableReboot()
+~~Can get hotel after creating it ?~~ 
 Description : null is ok, empty string is not
 
 ## Room
@@ -96,8 +96,8 @@ Description : null is ok, empty string is not
 ~~PUT is disabled~~
 ~~PATCH room~~
 ~~DELETE room~~
-View bookings !
-Book
+View bookings
+book
 Put room with unknown room id
 Invalid booking dates
 

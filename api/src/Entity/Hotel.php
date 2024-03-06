@@ -29,13 +29,11 @@ class Hotel
     #[Column]
     private string $location;
     #[OneToMany(mappedBy: 'hotel', targetEntity: Room::class, cascade: ['persist', 'remove'])]
+    /** @var Collection<Room> */
     private Collection $rooms;
     #[Column(nullable: true)]
     private ?string $description;
 
-    /**
-     * @param Room[] $rooms
-     */
     public function __construct(
         string $name,
         string $location,
@@ -138,5 +136,10 @@ class Hotel
         $newRoom = new Room($this, $name);
         $this->addRoom($newRoom);
         return $newRoom;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }
