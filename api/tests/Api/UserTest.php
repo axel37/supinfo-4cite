@@ -3,9 +3,12 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\Hotel;
+use App\Entity\Room;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Clock\DatePoint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -45,6 +48,49 @@ class UserTest extends ApiTestCase
             'email' => 'user@example.com',
             'userName' => 'UserName',
         ]);
+    }
+
+    public function testCanCreateThenReadBooking(): void
+    {
+        $hotel = new Hotel('Testing hotel', 'Test street');
+        $room = new Room($hotel, 'Testing room');
+        $roomId = $room->getId();
+        $hotel->addRoom($room);
+
+        $user = new User('testing@example.com', 'TestingUser');
+        $user->setPassword('password');
+        $userId = $user->getId();
+        $this->em->persist($user);
+        $this->em->persist($hotel);
+        $this->em->flush();
+
+        $start = new DatePoint('today');
+        $end = new DatePoint('tomorrow');
+        static::createClient()->request('POST', '/bookings', [
+            'json' => [
+                'ownerId' => $userId,
+                'roomId' => $roomId,
+                'startDate' => $start->format('Y-m-d'),
+                'endDate' => $end->format('Y-m-d')
+            ],
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+            ],
+        ]);
+        self::assertResponseIsSuccessful();
+
+        $response = self::createClient()->request('GET', '/users/' . $userId);
+        self::assertJsonContains([
+                '@context' => '/contexts/User',
+                '@type' => 'User',
+                'email' => 'testing@example.com',
+                'userName' => 'TestingUser',
+                'bookingIds' => []
+            ]);
+        // get bookingIds array from response and assert that its count is 1
+        $responseData = json_decode($response->getContent(), true);
+        $bookingIds = $responseData['bookingIds'];
+        self::assertCount(1, $bookingIds);
     }
 
     public function disabled_testLogin(): void

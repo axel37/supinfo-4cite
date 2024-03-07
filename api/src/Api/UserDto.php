@@ -12,6 +12,8 @@ use App\Exception\DtoIdAlreadySetException;
 use App\State\User\UserPasswordHasher;
 use App\State\User\UserStateProcessor;
 use App\State\User\UserStateProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
@@ -49,11 +51,15 @@ class UserDto implements PasswordAuthenticatedUserInterface
     #[Groups(['create', 'update'])]
     private string $plainPassword;
 
-    public function __construct(string $email, string $userName, string $plainPassword)
+    #[Groups(['read'])]
+    private Collection $bookingIds;
+
+    public function __construct(string $email, string $userName, string $plainPassword, ?Collection $bookingIds = null)
     {
         $this->email = $email;
         $this->userName = $userName;
         $this->plainPassword = $plainPassword;
+        $this->bookingIds = $bookingIds ?? new ArrayCollection();
     }
 
     public function getEmail(): string
@@ -113,5 +119,10 @@ class UserDto implements PasswordAuthenticatedUserInterface
     public function getId(): Uuid
     {
         return $this->id;
+    }
+
+    public function getBookingIds(): Collection
+    {
+        return $this->bookingIds;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Tests\Api;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Hotel;
 use App\Entity\Room;
+use App\Entity\User;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Clock\DatePoint;
@@ -17,6 +18,7 @@ class BookingTest extends ApiTestCase
     private EntityManagerInterface $em;
     private BookingRepository $bookingRepository;
     private Uuid $roomId;
+    private Uuid $userId;
 
     protected function setUp(): void
     {
@@ -27,9 +29,13 @@ class BookingTest extends ApiTestCase
 
         $hotel = new Hotel('Grand hotel', 'Pine street');
         $room = new Room($hotel, 'Room 237');
+        $user = new User('testing@example.com', 'TestingUser');
+        $user->setPassword('hello');
+        $this->userId = $user->getId();
         $hotel->addRoom($room);
         $this->roomId = $room->getId();
         $this->em->persist($hotel);
+        $this->em->persist($user);
         $this->em->flush();
     }
 
@@ -39,6 +45,7 @@ class BookingTest extends ApiTestCase
         $end = new DatePoint('tomorrow');
         static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')
@@ -74,6 +81,7 @@ class BookingTest extends ApiTestCase
         $end = new DatePoint('tomorrow');
         $response = static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')
@@ -105,6 +113,7 @@ class BookingTest extends ApiTestCase
         $end = new DatePoint('tomorrow');
         $response = static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')
@@ -136,6 +145,7 @@ class BookingTest extends ApiTestCase
         $end = new DatePoint('tomorrow');
         static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')
@@ -146,6 +156,7 @@ class BookingTest extends ApiTestCase
         ]);
         static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')
@@ -163,6 +174,7 @@ class BookingTest extends ApiTestCase
         $end = new DatePoint('tomorrow');
         $response = static::createClient()->request('POST', '/bookings', [
             'json' => [
+                'ownerId' => $this->userId,
                 'roomId' => $this->roomId,
                 'startDate' => $start->format('Y-m-d'),
                 'endDate' => $end->format('Y-m-d')

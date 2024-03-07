@@ -52,6 +52,7 @@ class UserTest extends KernelTestCase
     {
         $hotel = new Hotel('Temp hotel', 'Pine street');
         $room = new Room($hotel, 'Temp Room');
+        $hotel->addRoom($room);
         $this->em->persist($hotel);
 
         $user = new User('user@example.com', 'UserName');

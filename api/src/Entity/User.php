@@ -6,10 +6,13 @@ use App\Exception\EmptyEmailException;
 use App\Exception\EmptyNameException;
 use App\Hotel\BookingInterface;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,9 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Column(type: Types::JSON)]
     private array $roles;
 
-    /** @var BookingInterface[] */
-    // TODO relation
-    private array $bookings = [];
+    /** @var Collection<BookingInterface> */
+    #[OneToMany(mappedBy: 'owner', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
+    private Collection $bookings;
 
     public function __construct(string $email, string $username)
     {
@@ -42,6 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setEmail($email);
         $this->setUsername($username);
         $this->roles = [];
+        $this->bookings = new ArrayCollection();
     }
 
     public function getEmail(): string
@@ -59,9 +63,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bookings[] = $room->book($start, $end);
     }
 
-    public function getBookings(): array
+    public function getBookings(): Collection
     {
         return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): void
+    {
+        $this->bookings[] = $booking;
     }
 
     public function setEmail(string $email): void
