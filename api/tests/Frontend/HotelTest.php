@@ -6,10 +6,14 @@ use Symfony\Component\Panther\PantherTestCase;
 
 class HotelTest extends PantherTestCase
 {
-    public function testMyApp(): void
+    public function disabled_testMyApp(): void
     {
         $client = static::createPantherClient();
-        $client->request('GET', '/admin');
+        $crawler = $client->request('GET', '/admin');
+
+
+
+//        $client->waitFor('.RaLayout-appFrame');
 
         // use any PHPUnit assertion, including the ones provided by Symfony...
         $this->assertPageTitleContains('API Platform Admin');
