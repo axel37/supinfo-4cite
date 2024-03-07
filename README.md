@@ -17,7 +17,7 @@ This application makes use of containers through Docker and Docker compose which
 - `docker compose exec php bin/console d:m:m` : Create / update the database structure
 - `docker exec php bin/console lexik:jwt:generate-keypair` : Create keys for JWT generation
 
-After these steps, the API should now be available on [localhost](https://localhost/docs).
+After these steps, the API should now be available on [localhost/docs](https://localhost/docs), while the front-end application is located at [localhost/admin](https://localhost/admin).
 
 See the next sections for more commands and troubleshooting steps.
 
