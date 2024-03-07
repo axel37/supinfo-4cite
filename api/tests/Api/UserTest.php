@@ -3,9 +3,28 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserTest extends ApiTestCase
 {
+    private ContainerInterface $container;
+    private EntityManagerInterface $em;
+    private UserRepository $userRepository;
+    private UserPasswordHasherInterface $hasher;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->container = self::getContainer();
+        $this->em = $this->container->get('doctrine')->getManager();
+        $this->userRepository = $this->container->get(UserRepository::class);
+        $this->hasher = $this->container->get('security.user_password_hasher');
+    }
+
+
     public function testCanCreateUser(): void
     {
         static::createClient()->request('POST', '/users', [
@@ -31,23 +50,20 @@ class UserTest extends ApiTestCase
     public function testLogin(): void
     {
         $client = self::createClient();
-        $container = self::getContainer();
 
-        $user = new User();
-        $user->setEmail('test@example.com');
+        $user = new User('testing@example.com', 'Testing User');
         $user->setPassword(
-            $container->get('security.user_password_hasher')->hashPassword($user, '$3CR3T')
+            $this->hasher->hashPassword($user, '$3CR3T')
         );
 
-        $manager = $container->get('doctrine')->getManager();
-        $manager->persist($user);
-        $manager->flush();
+        $this->em->persist($user);
+        $this->em->flush();
 
         // retrieve a token
         $response = $client->request('POST', '/auth', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
+                'email' => 'testing@example.com',
                 'password' => '$3CR3T',
             ],
         ]);
@@ -56,12 +72,14 @@ class UserTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertArrayHasKey('token', $json);
 
+        // TODO : Access control
+
         // test not authorized
-        $client->request('GET', '/greetings');
+        $client->request('GET', '/hotels');
         $this->assertResponseStatusCodeSame(401);
 
         // test authorized
-        $client->request('GET', '/greetings', ['auth_bearer' => $json['token']]);
+        $client->request('GET', '/hotels', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
     }
 
