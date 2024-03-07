@@ -39,11 +39,14 @@ class BookingDto
     #[Assert\NotBlank]
     private \DateTimeInterface $endDate;
 
-    public function __construct(string $roomId, \DateTimeInterface $startDate, \DateTimeInterface $endDate)
+    private string $ownerId;
+
+    public function __construct(string $roomId, \DateTimeInterface $startDate, \DateTimeInterface $endDate, string $ownerId)
     {
         $this->roomId = $roomId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->ownerId = $ownerId;
     }
 
     public function getRoomId(): string
@@ -73,5 +76,16 @@ class BookingDto
         }
         $this->id = $id;
     }
+
+    public function getOwnerId(): string
+    {
+        return $this->ownerId;
+    }
+
+    public function setOwnerId(string $ownerId): void
+    {
+        $this->ownerId = $ownerId;
+    }
+
 
 }

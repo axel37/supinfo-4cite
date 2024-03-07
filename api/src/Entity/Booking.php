@@ -30,6 +30,9 @@ readonly class Booking implements BookingInterface
     #[ManyToOne(targetEntity: Room::class, inversedBy: 'bookings')]
     private Room $room;
 
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'bookings')]
+    private User $owner;
+
     /**
      * @throws BookingInThePastException Bookings can't be made for past dates.
      * @throws BookingEndsBeforeStartingException Start date must be before end date.
@@ -74,5 +77,15 @@ readonly class Booking implements BookingInterface
     public function getRoom(): Room
     {
         return $this->room;
+    }
+
+    public function setOwner(User $owner): void
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner(): User
+    {
+        return $this->owner;
     }
 }
